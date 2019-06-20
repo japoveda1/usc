@@ -1,19 +1,18 @@
-<html>
-    <head>
-        <title>Titulares prensa @yield('titulo')</title>
-    </head>
-    <body>
-        @section('sidebar')
-            This is the master sidebar.
-        @show
+@extends('layouts.app')
 
-        <div class="container">
+@section('content')
+        <div class="page-content">
             <form action="">
+            <div class="row">
                 Email: <input type="email" name="" id="">
+            </div>
+            <div  class="row">
                 Fecha del día que se analiza: <input type="date" name="" id="">
+            </div>                
+               
 
                 @yield('checkbox')
             </form>
         </div>
-    </body>
-</html>
+          
+@endsection
