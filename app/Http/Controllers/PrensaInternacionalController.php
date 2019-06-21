@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PrensaInternacionalController extends Controller
 {
@@ -34,7 +35,32 @@ class PrensaInternacionalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $validated = $request->validated();
+
+            DB::beginTransaction();
+
+            ResolucionModel::create(
+                [
+                    'f051_num_res'=>$request->num_res,
+                    'f051_fecha_exp_res'=>$request->fecha_res,
+                    'f051_num_ini'=>$request->num_ini,
+                    'f051_num_sig'=>$request->num_sig,
+                    'f051_num_fin'=>$request->num_fin,
+                    'f051_creado_por' =>Auth::id(),
+                    'created_at'=>Carbon::now()->toDateTimeString()
+                ]
+            );
+
+            DB::commit();
+
+            return response()
+            ->json(['status' => true]);
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            abort(500,$th->getMessage());
+        }
     }
 
     /**
