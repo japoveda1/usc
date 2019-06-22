@@ -20,3 +20,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('prensa-internacional', 'PrensaInternacionalController');
 Route::resource('prensa-regional', 'PrensaRegionalController');
+Route::resource('prensa-nacional', 'PrensaNacionalController');

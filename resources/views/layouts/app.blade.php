@@ -699,9 +699,9 @@
                                     </a>
                                 </li>
                                 <li class="nav-item start ">
-                                    <a href="admin_2/dashboard_3.html" class="nav-link ">
+                                    <a href="prensa-nacional" class="nav-link ">
                                         <i class="icon-graph"></i>
-                                        <span class="title">Dashboard 3</span>
+                                        <span class="title">Nacional</span>
                                         <span class="badge badge-danger">5</span>
                                     </a>
                                 </li>
