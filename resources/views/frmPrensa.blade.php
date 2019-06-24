@@ -3,6 +3,15 @@
 @section('content')
 
 <div class="page-content">
+
+<div class="portlet light ">
+  <div class="caption font-red-sunglo">
+      <span class="caption-subject bold uppercase"> Titulares de Prensa Regional</span>
+  </div>
+
+<div class="portlet-title">
+
+</div>
     <form action="{{$post}}">
         @csrf
         <div class="form-group">
@@ -524,6 +533,9 @@ Titulares relacionados con el tema:
 
 <input type="button" value="Guardar">
     </form>
+
 </div>
+</div>
+
           
 @endsection

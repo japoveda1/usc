@@ -1,40 +1,22 @@
-@extends('frmPrensa',['post'=>'prensa-regional'])
+@extends('frmPrensa',['post'=>'prensa-regional','ArrayTema' => $ArrayTema ])
 
 @section('title','Regional')
 
 @section('checkbox')
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="noti5">
-  <label class="form-check-label" for="noti5">
-    NOTI 5
-  </label>
-</div>
 
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="90minutos">
-  <label class="form-check-label" for="90minutos">
-    90 MINUTOS
-  </label>
-</div>
+    <div class="form-group">
+      <label class="control-label">Medio Analizado</label>
 
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="telepacifico">
-  <label class="form-check-label" for="telepacifico">
-    TELE PACÍFICO NOTICIAS
-  </label>
-</div>
+          <select class="form-control" name='iptMedioComunicacion'>
+          @foreach ($ArrayMedioComunicacion as $objMC)
+              <option value='{{$objMC->f10_rowid}}'>{{ $objMC->f10_descripcion}}</option>
+          @endforeach
 
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="cnc">
-  <label class="form-check-label" for="cnc">
-    CNC (TULUA)
-  </label>
-</div>
+          </select>
 
-<div class="form-group">
-    <label for="enlace">Enlace de emisión</label>
-    <input type="text" class="form-control" id="enlace" aria-describedby="enlaceHelp" placeholder="Ingrese el enlace de emisión">
-</div>
+    </div>
+
+
 
 
 @endsection

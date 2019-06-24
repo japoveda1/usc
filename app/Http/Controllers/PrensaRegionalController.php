@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Tema;
+use App\MedioComunicacion;
 use Illuminate\Http\Request;
 
 class PrensaRegionalController extends Controller
@@ -12,9 +14,19 @@ class PrensaRegionalController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+    
+        //se obtienen los medios de comunicacion 
+        $vArrayMedioComunicacion= MedioComunicacion::all();
+
+        //Se obtienen los temas
+        $vArrayTema= Tema::all();
+
         //
-        return view('frmPrensaRegional');
+        return view('frmPrensaRegional',[
+            'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
+            'ArrayTema'=>$vArrayTema]
+        );
     }
 
     /**
@@ -27,6 +39,7 @@ class PrensaRegionalController extends Controller
         //
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -36,6 +49,7 @@ class PrensaRegionalController extends Controller
     public function store(Request $request)
     {
         //
+        echo('store');
     }
 
     /**
@@ -82,4 +96,7 @@ class PrensaRegionalController extends Controller
     {
         //
     }
+
+
+
 }
