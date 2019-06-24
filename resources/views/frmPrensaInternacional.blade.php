@@ -4,61 +4,17 @@
 
 @section('checkbox')
 
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="ARISTEGUI">
-  <label class="form-check-label" for="ARISTEGUI">
-    ARISTEGUI NOTICIAS (MEX)
-  </label>
-</div>
+<div class="form-group">
+      <label class="control-label">Medio Analizado</label>
 
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="bbc">
-  <label class="form-check-label" for="bbc">
-    BBC
-  </label>
-</div>
+          <select class="form-control" name='iptMedioComunicacion'>
+          @foreach ($ArrayMedioComunicacion as $objMC)
+              <option value='{{$objMC->f10_rowid}}'>{{ $objMC->f10_descripcion}}</option>
+          @endforeach
 
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="elpais">
-  <label class="form-check-label" for="elpais">
-    EL PAÍS GLOBAL
-  </label>
-</div>
+          </select>
 
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="miami">
-  <label class="form-check-label" for="miami">
-    MIAMI HERALD
-  </label>
-</div>
-
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="newyork">
-  <label class="form-check-label" for="newyork">
-    EL NEW YORK TIMES
-  </label>
-</div>
-
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="universal">
-  <label class="form-check-label" for="universal">
-    EL UNIVERSAL (MÉXICO)
-  </label>
-</div>
-
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="miami">
-  <label class="form-check-label" for="miami">
-    WASHINGTON POST
-  </label>
-</div>
-
-<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="miami">
-  <label class="form-check-label" for="miami">
-    BOSTON GLOBE
-  </label>
-</div>
+    </div>
 
 <div class="form-check">
   <input type="text" class="form-control" placeholder="Otros">

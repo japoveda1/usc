@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\MedioComunicacion;
+use App\Tema;
+use App\Models\PrensaInternacionalModel;
 
 class PrensaInternacionalController extends Controller
 {
@@ -14,7 +17,17 @@ class PrensaInternacionalController extends Controller
      */
     public function index()
     {
-        return view('frmPrensaInternacional');
+         //se obtienen los medios de comunicacion 
+         $vArrayMedioComunicacion= MedioComunicacion::all();
+
+         //Se obtienen los temas
+         $vArrayTema= Tema::all();
+ 
+         //
+         return view('frmPrensaInternacional',[
+             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
+             'ArrayTema'=>$vArrayTema]
+         );
     }
 
     /**
@@ -36,30 +49,30 @@ class PrensaInternacionalController extends Controller
     public function store(Request $request)
     {
         try {
-            $validated = $request->validated();
+            //$validated = $request->validated();
 
             DB::beginTransaction();
 
-            ResolucionModel::create(
+            PrensaInternacionalModel::create(
                 [
-                    'f051_num_res'=>$request->num_res,
-                    'f051_fecha_exp_res'=>$request->fecha_res,
-                    'f051_num_ini'=>$request->num_ini,
-                    'f051_num_sig'=>$request->num_sig,
-                    'f051_num_fin'=>$request->num_fin,
-                    'f051_creado_por' =>Auth::id(),
-                    'created_at'=>Carbon::now()->toDateTimeString()
+                    'f50_rowid'=>1,
+                    'f50_correo'=>$request->email,
+                    'f50_fecha'=>$request->fecha,
+                    'f50_rowid_medio_comunic'=>$request->iptMedioComunicacion,
+                    //'f50_rowid_tema_relevante'=>$request->num_sig,
+                    'f50_observacion'=>$request->observacion
                 ]
             );
 
             DB::commit();
 
-            return response()
-            ->json(['status' => true]);
+            // return response()
+            // ->json(['status' => true]);
 
         } catch (\Throwable $th) {
             DB::rollBack();
-            abort(500,$th->getMessage());
+            //abort(500,$th->getMessage());
+            echo $th->getMessage();
         }
     }
 

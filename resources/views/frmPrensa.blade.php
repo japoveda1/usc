@@ -12,15 +12,15 @@
 <div class="portlet-title">
 
 </div>
-    <form action="{{$post}}">
+    <form action="{{$post}}" method="post">
         @csrf
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Ingrese Email">
+            <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Ingrese Email">
         </div>
         <div class="form-group">
             <label for="fecha">Fecha del día que se analiza:</label>
-            <input type="date" class="form-control" id="fecha" aria-describedby="fechaHelp" placeholder="Seleccione fecha">
+            <input type="date" name="fecha" class="form-control" id="fecha" aria-describedby="fechaHelp" placeholder="Seleccione fecha">
         </div>
         @yield('checkbox')
 
@@ -422,14 +422,14 @@ Titulares relacionados con el tema:
 </table>
 
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="ARISTEGUI">
+  <input class="form-check-input" type="checkbox" name="aristegui"  id="ARISTEGUI">
   <label class="form-check-label" for="ARISTEGUI">
     CORRUPCIÓN / JUDICIALES
   </label>
 </div>
 
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="bbc">
+  <input class="form-check-input" type="checkbox" name="accidentes" id="bbc">
   <label class="form-check-label" for="bbc">
     ACCIDENTES
   </label>
@@ -528,10 +528,10 @@ Titulares relacionados con el tema:
 
 <div class="form-group">
     <label for="observacion">Observación general</label>
-    <textarea class="form-control" id="observacion" rows="3"></textarea>
+    <textarea class="form-control" id="observacion" rows="3" name="observacion"></textarea>
 </div>
 
-<input type="button" value="Guardar">
+<input type="submit" value="Guardar">
     </form>
 
 </div>

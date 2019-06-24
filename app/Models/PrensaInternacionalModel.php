@@ -10,25 +10,23 @@ class PrensaInternacionalModel extends Model
      * Definicion de los campos seleccionables
      */
     protected $fillable = [
-        'f051_id',
-        'f051_num_res',
-        'f051_fecha_exp_res',
-        'f051_num_ini',
-        'f051_num_sig',
-        'f051_num_fin',
-        'f051_creado_por',
-        'f051_modificado_por',
-        'created_at',
-        'updated_at'
+        'f50_rowid',
+        'f50_correo',
+        'f50_fecha',
+        'f50_rowid_medio_comunic',
+        'f50_rowid_tema_relevante',
+        'f50_observacion'
     ];
 
     /**
      * Definicion del nombre de la tabla
      */
-    protected $table = "t051_resoluciones";
+    protected $table = "t50_formulario";
 
     /**
      * Definicion de la llave primaria
      */
-    protected $primaryKey = 'f051_id';
+    protected $primaryKey = 'f50_rowid';
+
+    public $timestamps = false;
 }
