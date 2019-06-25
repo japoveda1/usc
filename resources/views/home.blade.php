@@ -21,6 +21,6 @@
     </div>
 </div>-->
 <div class="page-content">
-            <h1>funciono!!!</h1>
+            <h1>Analisis de Medios de Comunicacion </h1>
 </div>
         @endsection

@@ -1,10 +1,10 @@
-@extends('frmPrensa',['post'=>'prensa-internacional'])
+@extends('frmPrensa',['post'=>'prensa-internacional','strTituloFormulario'=>$strTituloFormulario])
 
 @section('title','Internacional')
 
 @section('checkbox')
 
-<div class="form-group">
+<!--<div class="form-group">
       <label class="control-label">Medio Analizado</label>
 
           <select class="form-control" name='iptMedioComunicacion'>
@@ -14,11 +14,7 @@
 
           </select>
 
-    </div>
-
-<div class="form-check">
-  <input type="text" class="form-control" placeholder="Otros">
-</div>
+    </div>-->
 
 <span>Archivo de portada prensa escrita o digital</span>
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\MedioComunicacion;
 use App\Tema;
+use App\Formulario;
 use App\Models\PrensaInternacionalModel;
 
 class PrensaInternacionalController extends Controller
@@ -23,8 +24,9 @@ class PrensaInternacionalController extends Controller
          //Se obtienen los temas
          $vArrayTema= Tema::all();
  
-         //
+         
          return view('frmPrensaInternacional',[
+             'strTituloFormulario'=>'Titulares Prensa Internacional',
              'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
              'ArrayTema'=>$vArrayTema]
          );
@@ -48,32 +50,41 @@ class PrensaInternacionalController extends Controller
      */
     public function store(Request $request)
     {
+
+        if(empty(trim($request->email))){
+           
+            return view('frmConfirmacion',['strMensaje'=>'No se guardo el formulario']);
+
+        };
+
         try {
             //$validated = $request->validated();
 
             DB::beginTransaction();
 
-            PrensaInternacionalModel::create(
+            $v = Formulario::create(
                 [
-                    'f50_rowid'=>1,
                     'f50_correo'=>$request->email,
                     'f50_fecha'=>$request->fecha,
                     'f50_rowid_medio_comunic'=>$request->iptMedioComunicacion,
                     //'f50_rowid_tema_relevante'=>$request->num_sig,
                     'f50_observacion'=>$request->observacion
                 ]
-            );
+            )->get(['f50_rowid']);
 
             DB::commit();
 
             // return response()
             // ->json(['status' => true]);
-
+            return view('frmConfirmacion',['strMensaje'=>'Creacion exitosa']);
         } catch (\Throwable $th) {
             DB::rollBack();
             //abort(500,$th->getMessage());
             echo $th->getMessage();
         }
+
+        //return redirect()->route('prensa-internacional.index');
+        
     }
 
     /**

@@ -10,7 +10,7 @@ class PrensaInternacionalModel extends Model
      * Definicion de los campos seleccionables
      */
     protected $fillable = [
-        'f50_rowid',
+        //'f50_rowid',
         'f50_correo',
         'f50_fecha',
         'f50_rowid_medio_comunic',
