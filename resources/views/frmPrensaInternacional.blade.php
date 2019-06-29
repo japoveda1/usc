@@ -1,4 +1,7 @@
-@extends('frmPrensa',['post'=>'prensa-internacional','strTituloFormulario'=>$strTituloFormulario])
+@extends('frmPrensa',
+['post'=>'prensa-internacional',
+'strTituloFormulario'=>$strTituloFormulario,
+'ArrayEstructura'=>$ArrayEstructura])
 
 @section('title','Internacional')
 

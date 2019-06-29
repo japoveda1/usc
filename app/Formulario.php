@@ -10,7 +10,6 @@ class Formulario extends Model
      * Definicion de los campos seleccionables
      */
     protected $fillable = [
-        'f50_rowid',
         'f50_estado',
         'f50_descripcion',
         'f50_correo',
@@ -21,7 +20,7 @@ class Formulario extends Model
         'f50_rowid_ambito',
         'f50_rowid_estructura',
         'f50_nativo_digital',
-        'f50_titular_medio_digital',
+        'f50_titular_medio_comunic',
         'f50_rowid_archivo',
         'f50_titular_solo_portada',
         'f50_titular_solo_interior',

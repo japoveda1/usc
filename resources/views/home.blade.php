@@ -20,7 +20,11 @@
         </div>
     </div>
 </div>-->
-<div class="page-content">
-            <h1>Analisis de Medios de Comunicacion </h1>
+<div class="page-content" >
+
+    <img  src="../../assets/apps/img/home.jpeg" alt="...">
+
+  
+            
 </div>
         @endsection

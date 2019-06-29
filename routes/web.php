@@ -19,6 +19,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+Route::get('/reporte-prensa-inter/{id}', 'RptPrensaInterController@index')->name('consulta-prensa-inter');
+Route::get('/consultar', 'RptPrensaInterController@consultar')->name('reporte-prensa-inter');
+
 Route::resource('prensa-internacional', 'PrensaInternacionalController');
 Route::resource('prensa-regional', 'PrensaRegionalController');
 Route::resource('prensa-nacional', 'PrensaNacionalController');

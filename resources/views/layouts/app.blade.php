@@ -143,11 +143,11 @@
 <div class="page-container">
             <div class="page-sidebar-wrapper">
                  <div class="page-sidebar navbar-collapse collapse">
-                           <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+                    <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
                         <li class="nav-item start active open">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-book-open"></i>
-                                <span class="title">Ttitulares de Prensa</span>
+                                <span class="title">Titulares de Prensa</span>
                                 <span class="selected"></span>
                                 <span class="arrow open"></span>
                             </a>
@@ -173,6 +173,94 @@
                                         
                                     </a>
                                 </li>
+                                <li class="nav-item start ">
+                                    <a href="/reporte-prensa-inter/1" class="nav-link ">
+                                        
+                                        <span class="title">Reporte Prensa Internacional</span>
+                                        
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item start active open">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-screen-desktop"></i>
+                                <span class="title">Titulares de Television</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start active open">
+                                    <a href="prensa-internacional" class="nav-link ">
+                                        
+                                        <span class="title">internacional</span>
+                                        <span class="selected"></span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start ">
+                                    <a href="prensa-regional" class="nav-link ">
+                                       
+                                        <span class="title">Regional</span>
+                                        
+                                    </a>
+                                </li>
+                                <li class="nav-item start ">
+                                    <a href="prensa-nacional" class="nav-link ">
+                                        
+                                        <span class="title">Nacional</span>
+                                        
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item start active open">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="glyphicon glyphicon-check"></i>
+                                <span class="title">Seguimiento Electorial</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start active open">
+                                    <a href="prensa-internacional" class="nav-link ">
+                                        
+                                        <span class="title">Medios Digitales</span>
+                                        <span class="selected"></span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start ">
+                                    <a href="prensa-regional" class="nav-link ">
+                                       
+                                        <span class="title">Television</span>
+                                        
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item start active open">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="glyphicon glyphicon-list-alt"></i>
+                                <span class="title">Reportes</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start active open">
+                                    <a href="/reporte-prensa-inter/1" class="nav-link ">
+                                        
+                                        <span class="title">Prensa Escrita Internacional</span>
+                                        <span class="selected"></span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start ">
+                                    <a href="prensa-regional" class="nav-link ">
+                                       
+                                        <span class="title">Television</span>
+                                        
+                                    </a>
+                                </li>
+
                             </ul>
                         </li>
 
@@ -803,5 +891,10 @@
             <script src="../assets/layouts/layout2/scripts/demo.min.js" type="text/javascript"></script>
             <script src="../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
             <script src="../assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+            <script src="../js/highcharts.js"></script>
+            <script src="../js/modules/data.js"></script>
+            <script src="../js/modules/exporting.js"></script>
+            <script src="../js/modules/export-data.js"></script>
+            @yield('scripts')
 </body>
 </html>

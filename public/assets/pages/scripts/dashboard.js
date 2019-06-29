@@ -1209,7 +1209,7 @@ var Dashboard = function() {
                     "income": 30.6,
                     "expenses": 28.2,
                 }, {
-                    "year": 2014,
+                    "year": 2015,
                     "income": 34.1,
                     "expenses": 32.9,
                     "dashLengthColumn": 5,
