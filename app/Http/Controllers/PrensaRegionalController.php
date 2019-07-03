@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Tema;
+use Illuminate\Support\Facades\DB;
 use App\MedioComunicacion;
+use App\Tema;
+use App\Formulario;
+use App\Estructura;
+use App\TemaFormulario;
+use App\Models\PrensaInternacionalModel;
 use Illuminate\Http\Request;
 
 class PrensaRegionalController extends Controller
@@ -14,19 +19,23 @@ class PrensaRegionalController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
-    
-        //se obtienen los medios de comunicacion 
-        $vArrayMedioComunicacion= MedioComunicacion::all();
+    {
+         //se obtienen los medios de comunicacion 
+         $vArrayMedioComunicacion=MedioComunicacion::where('f10_rowid_ambito', 1)->get();
 
-        //Se obtienen los temas
-        $vArrayTema= Tema::all();
+         //Se obtienen los temas
+         $vArrayTema= Tema::all();
 
-        //
-        return view('frmPrensaRegional',[
-            'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
-            'ArrayTema'=>$vArrayTema]
-        );
+         //
+        $vArrayEstructura = Estructura::all();
+         
+         return view('frmPrensaInternacional',[
+             'strTituloFormulario'=> 'Titulares Prensa Regional',
+             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
+             'ArrayTema'=>$vArrayTema,
+             'ArrayEstructura'=> $vArrayEstructura,
+             'Post'=>'prensa-regional']
+         );
     }
 
     /**
@@ -48,8 +57,99 @@ class PrensaRegionalController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        echo('store');
+      
+        try {
+            //$validated = $request->validated();
+
+            DB::beginTransaction();
+            //$v= ($request->checkTemaRelevante  == 'on') ? 1 : 0;
+            $vIntRowidFormulario = Formulario::create(
+                [
+                    'f50_estado'=>0,
+                    'f50_descripcion'=> "Titulares Prensa Regional",
+                    'f50_correo'=>$request->inputCorreo,
+                    'f50_fecha'=>$request->inputFecha,
+                    'f50_rowid_medio_comunic'=>$request->selectMedioComunic,
+                    'f50_rowid_tema_relevante'=>$request->selectRelevanteTema ,
+                    'f50_observacion'=>$request->txtAreaObserv,
+                    'f50_rowid_ambito'=>1,
+                    'f50_rowid_estructura'=>$request->selectEstructura,
+                    'f50_nativo_digital'=>$request->selectNativoDigital,
+                    'f50_titular_medio_comunic'=>$request->inputTitularPortada,
+                    //'f50_rowid_archivo'=>$request->
+                    'f50_titular_solo_portada'=>1,
+                    'f50_titular_solo_interior'=>0
+                    //'f50_titular_interior_1'=>$request->
+                    //'f50_titular_interior_2'=>$request->
+                    //'f50_titular_interior_3'=>$request->
+                    //'f50_titular_interior_4'=>$request->
+                    //'f50_titular_interior_5'=>$request->
+                    //'f50_rowid_candidato_alcaldia'=>$request->
+                    //'f50_rowid_candidato_gobern'=>$request->
+                    //'f50_rowid_origen_noticia'=>$request->
+                    //'f50_rowid_ubicacion'=>$request->
+                    //'f50_rowid_intencion'=>$request->
+                    //'f50_ind_identificacion_fuente'=>$request->
+                    //'f50_rowid_pertinencia_fuente'=>$request->
+                    //'f50_equilibrio_fuente'=>$request->
+                    //'f50_relevancia_valor'=>$request->
+                    //'f50_rowid_genero_periodistico'=>$request->
+                    //'f50_lo_ve'=>$request->
+                    //'f50_gusta'=>$request->
+                    //'f50_comentarios'=>$request->
+                    //'f50_compartido'=>$request->
+                    //'f50_nivel_interactividad'=>$request->
+                    //'f50_rowid_postura'
+
+                    //'f50_correo'=>$request->email=>
+                    //'f50_fecha'=>$request->fecha=>
+                    //'f50_rowid_medio_comunic'=>$request->iptMedioComunicacion=>
+                    //'f50_rowid_tema_relevante'=>$request->num_sig=>
+                    //'f50_observacion'=>$request->observacion
+                ]
+            )->get(['f50_rowid'])->last();
+            
+            //Se crea objeto anonimo para guardar los temas relacionados            
+            $vObjTemaRel = new \stdClass();
+
+            //Se extraen los elementos que conforma el formulario
+            $vObjTemporal= $request->request;
+
+            //Se recorre los elementos del formulario para tomar los del tema relacionado
+            foreach ($vObjTemporal as $clave => $valor) {
+             
+                if( strcmp(substr($clave,0,10),'selectTema') == 0 && $valor != 0){
+                    
+                    $vStrRowidTema= substr($clave,10,2);
+
+                    TemaFormulario::create([
+                        'f200_rowid_tema'=>$vStrRowidTema,
+                        'f200_rowid_formulario'=>$vIntRowidFormulario->f50_rowid,
+                        'f200_valor'=>$valor
+                    ]);
+                    
+                };
+
+            };
+  
+            DB::commit();
+
+            // return response()
+            // ->json(['status' => true]);
+            return view('frmConfirmacion',['strMensaje'=>'Creacion exitosa','return'=>'prensa-regional']);
+                
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            abort(500,$th->getMessage());
+            //echo $th->getMessage();
+        }
+
+
+
+
+        
+        //return redirect()->route('prensa-internacional.index');
+        
     }
 
     /**

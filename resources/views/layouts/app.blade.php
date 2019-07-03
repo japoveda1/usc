@@ -43,9 +43,6 @@
 </head>
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid">
     <div id="app">
-
-
-        
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
             <div class="page-header-inner ">
@@ -53,8 +50,6 @@
                     <a href="/home">
                          <h1>{{ config('app.name', 'USC') }}</h1> 
                     </a>
-                 
-      
                 </div>
 
                 <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
@@ -68,7 +63,7 @@
                     <div class="top-menu">
                         
                     <ul class="nav navbar-nav pull-right">
-                      <!--
+                      
                             @guest
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -129,7 +124,7 @@
                             </li>
                               @endguest
                         </ul>
-                        -->              
+                                      
                     
                     </div>
                   </div>
@@ -140,7 +135,12 @@
         <main class="py-4">
             
 
-<div class="page-container">
+        <div class="page-container">
+
+        @guest
+        @else
+        
+
             <div class="page-sidebar-wrapper">
                  <div class="page-sidebar navbar-collapse collapse">
                     <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
@@ -153,33 +153,27 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item start active open">
-                                    <a href="prensa-internacional" class="nav-link ">
+                                    <a href="/prensa-internacional" class="nav-link ">
                                         
                                         <span class="title">internacional</span>
                                         <span class="selected"></span>
                                     </a>
                                 </li>
                                 <li class="nav-item start ">
-                                    <a href="prensa-regional" class="nav-link ">
+                                    <a href="/prensa-regional" class="nav-link ">
                                        
                                         <span class="title">Regional</span>
                                         
                                     </a>
                                 </li>
                                 <li class="nav-item start ">
-                                    <a href="prensa-nacional" class="nav-link ">
+                                    <a href="/prensa-nacional" class="nav-link ">
                                         
                                         <span class="title">Nacional</span>
                                         
                                     </a>
                                 </li>
-                                <li class="nav-item start ">
-                                    <a href="/reporte-prensa-inter/1" class="nav-link ">
-                                        
-                                        <span class="title">Reporte Prensa Internacional</span>
-                                        
-                                    </a>
-                                </li>
+
                             </ul>
                         </li>
                         <li class="nav-item start active open">
@@ -269,9 +263,14 @@
                 </div>
 
             </div>
+
+            @endguest
+
+
             <div class="page-content-wrapper">
                 
             @yield('content')
+
             </div>
             <!-- END CONTENT -->
             <!-- BEGIN QUICK SIDEBAR -->

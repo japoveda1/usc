@@ -85,7 +85,7 @@
 
   </div>
 
-<!--TABLA FRECUENCIA DE TEMA -->
+<!--FRECUENCIA DE TEMA -->
 @elseif($seccion==1)
 <div class="portlet light ">
 
@@ -99,15 +99,15 @@
 
 </div>
 
-
-  <table class="table table-bordered table-striped table-condensed flip-content">
+@if ($presentacionRpt==1)
+<!--TABLA FRECUENCIA DE TEMA -->
+<table class="table table-bordered table-striped table-condensed flip-content">
       <thead class="flip-content">
           <tr>
               <th width="20%">Tipo de medio</th>
               <th>Medio de comunicacion</th>
               <th>Tema</th>
               <th>Frecuencia</th>
-              <th>Fecha</th>
 
           </tr>
       </thead>
@@ -119,55 +119,74 @@
               <td> {{$res->f_medio_descripcion}} </td>
               <td> {{$res->f_tema_descripcion}} </td>
               <td> {{$res->f_frecuencia}} </td>
-              <td class="datetime" > {{$res->f_fecha}} </td>
           </tr>
-          @endforeach
+
+        @endforeach
       </tbody>
   </table>
-  <div class="row">
-  
-      <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-                             
+@endif
 
-  </div>
-                          
+@if($presentacionRpt==2)
+<!--GRAFICO DE TEMA -->
+<div class="row">
+  <div id="barras" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+  <div id="torta" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 </div>
+@endif
+            
+
+
+
+              
+</div>
+
+
 <!--TABLA DE TEMA RELEVANTE -->
 @elseif($seccion==2)
 
 <div class="portlet light ">
-<div class="portlet-title">
-<a  class="btn blue" href="/reporte-prensa-inter/1">
-      Filtros
-    </a>
-<br>
-<h1>TEMA RELEVANTE</h1>
+  <div class="portlet-title">
+  <a  class="btn blue" href="/reporte-prensa-inter/1">
+        Filtros
+      </a>
+  <br>
+  <h1>TEMA RELEVANTE</h1>
+
+  </div>
+  @if ($presentacionRpt==1)
+  <table class="table table-bordered table-striped table-condensed flip-content">
+        <thead class="flip-content">
+            <tr>
+                <th>Tipo de medio </th>
+                <th width="20%">Medio de comunicacion</th>
+                <th>Tema mas relevante</th>
+                <th>Cantidad</th>
+                <th>Porcentaje %</th>
+
+            </tr>
+        </thead>
+        <tbody>
+          @foreach($resultado as $res)
+          
+            <tr>
+                <td> {{$res->f_tipo_medio}} </td>
+                <td> {{$res->f_medio_descripcion}} </td>
+                <td> {{$res->f_tema_descripcion}} </td>
+                <td> {{$res->f_cantidad}} </td>
+                <td> {{$res->f_porcentaje}} </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+  @endif
+
+  @if ($presentacionRpt==2)
+  <div id="torta" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+  @endif
 
 </div>
 
-<table class="table table-bordered table-striped table-condensed flip-content">
-      <thead class="flip-content">
-          <tr>
-              <th>Tipo de medio </th>
-              <th width="20%">Medio de comunicacion</th>
-              <th>Tema mas relevante</th>
-              <th>Fecha</th>
 
-          </tr>
-      </thead>
-      <tbody>
-        @foreach($resultado as $res)
-        
-          <tr>
-              <td> {{$res->f_tipo_medio}} </td>
-              <td> {{$res->f_medio_descripcion}} </td>
-              <td> {{$res->f_tema_descripcion}} </td>
-              <td class="datetime" > {{$res->f_fecha}} </td>
-          </tr>
-          @endforeach
-      </tbody>
-  </table>
-</div>
 <!--TABLA OBSERVACIONES -->
 @elseif($seccion==3)
 
@@ -218,41 +237,110 @@
 
 <script type="text/javascript">
 
-var jobs =  {!! json_encode($resultado) !!};
+var resultado_json =  {!! json_encode($resultado) !!};
+var seccion = {!! json_encode($seccion)!!};
+var presentacionRpt ={!! json_encode($presentacionRpt)!!};
+var ArrayTemas =[];
 
-console.log(jobs[0].f_tipo_medio);
+var ArrayCompuesto =[{medio:"",tema:[""]}];
+var ArrayMediosComunic = [];
+var series = [];
 
-Highcharts.chart('container', {
+if(seccion== 1  && presentacionRpt==2 ){
+  grafico_barra();
+}
+
+if(seccion== 2  && presentacionRpt==2){
+  grafico_torta()
+}
+
+function grafico_barra(){
+
+  //Se recorre el objeto para sacar los difirentes arrays para la grafica 
+  resultado_json.forEach(function(res) {
+
+  // se obteienene los temas 
+  let existe_tema = ArrayTemas.some(elem => elem == res.f_tema_descripcion);
+  if (existe_tema == false){
+    ArrayTemas.push(res.f_tema_descripcion)
+  };
+
+  // se obtienen los medio de comnicacionn 
+  let existe_medio = ArrayMediosComunic.some(elem => elem == res.f_medio_descripcion);
+  if (existe_medio == false){
+    ArrayMediosComunic.push(res.f_medio_descripcion)
+  };
+
+
+  let existe_medio_comp = ArrayCompuesto.some(elem =>elem.medio == res.f_medio_descripcion);
+
+  if (existe_medio == false){
+
+    ItemCompuesto={
+      medio:res.f_medio_descripcion,
+      temas:[]
+    };
+    ItemCompuesto.temas.push({tema:res.f_tema_descripcion,frecuencia:Number(res.f_frecuencia)});
+
+    if (ArrayCompuesto[0].medio == ""){
+      ArrayCompuesto=[];
+      ArrayCompuesto.push(ItemCompuesto);
+    }else{
+      ArrayCompuesto.push(ItemCompuesto);
+    }
+  }else{
+
+    ArrayCompuesto.forEach(function(comp){
+
+      if(comp.medio == res.f_medio_descripcion ) {
+        let existe_tema_comp = comp.temas.some(elem => elem == res.f_tema_descripcion);
+        comp.temas.push({tema:res.f_tema_descripcion,frecuencia:Number(res.f_frecuencia)});
+      }
+    });
+  }
+  });
+
+
+  var obj=[];
+  var temp= false
+  //por cada medio se recorrre los temas e ingreso la frecuencia si alguno de de los temas  del compuesto  
+  ArrayCompuesto.forEach(function(comp){
+
+  var series_obj = [];
+  series_obj = {name:comp.medio,data:[]}
+  ArrayTemas.forEach(function(tem){
+    var temp= false;
+    temp = comp.temas.some(elem => elem.tema == tem);
+
+      if(temp == true){
+        series_obj.data.push(comp.temas.find(x => x.tema == tem).frecuencia);
+      }else{
+        series_obj.data.push(0);
+      }
+  });
+  series.push(series_obj);
+  console.log("proceso:",obj);
+  });
+  console.log("final:",series);
+
+  Highcharts.chart('barras', {
     chart: {
         type: 'column'
     },
     title: {
-        text: 'Monthly Average Rainfall'
+        text: 'Frecuencia de Tema '
     },
     subtitle: {
-        text: 'Source: WorldClimate.com'
+        text: 'Por medio comunicacion'
     },
     xAxis: {
-        categories: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-        ],
+        categories: ArrayTemas,
         crosshair: true
     },
     yAxis: {
         min: 0,
         title: {
-            text: 'Rainfall (mm)'
+            text: 'Frecuencia'
         }
     },
     tooltip: {
@@ -269,23 +357,72 @@ Highcharts.chart('container', {
             borderWidth: 0
         }
     },
-    series: [{
-        name: 'Tokyo',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+    series: series
+  });
 
-    }, {
-        name: 'New York',
-        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+}
 
-    }, {
-        name: 'London',
-        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+function grafico_torta(){
 
-    }, {
-        name: 'Berlin',
-        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
 
-    }]
-});
+  //Se recorre el objeto para sacar los difirentes arrays para la grafica 
+  resultado_json.forEach(function(res) {
+
+    var series_obj = [];
+    series_obj = {
+                name:res.f_tema_descripcion,
+                y:res.f_porcentaje
+              };
+
+    series.push(series_obj);
+  });
+
+
+
+
+  ArrayTemas.forEach(function(tem){
+    var series_obj = [];
+    series_obj = {
+                name:tema,
+                y:0
+              }
+
+    series.push(series_obj);
+  });
+ 
+
+
+    // Build the chart
+  Highcharts.chart('torta', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Browser market shares in January, 2018'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: resultado_json[0].f_medio_descripcion,
+            colorByPoint: true,
+            data: series
+        }]
+    });
+  }
+
 		</script>
 @endsection

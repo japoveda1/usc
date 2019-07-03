@@ -5,11 +5,12 @@
 <div class="page-content">
 
 <div class="portlet light ">
+
+<div class="portlet-title">
   <div class="caption font-red-sunglo">
       <h2 class="caption-subject bold uppercase">{{$strTituloFormulario}}</h2>
   </div>
 
-<div class="portlet-title">
 
 </div>
     <form action="{{$post}}" method="post">

@@ -10,7 +10,7 @@
       </div>
    
       <button>
-        <a href="prensa-internacional" class="nav-link ">
+        <a href="{{$return}}" class="nav-link ">
           <span class="title">Volver al formulario</span>
         </a>
       </button>

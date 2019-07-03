@@ -22,7 +22,7 @@ class PrensaInternacionalController extends Controller
     public function index()
     {
          //se obtienen los medios de comunicacion 
-         $vArrayMedioComunicacion= MedioComunicacion::all();
+         $vArrayMedioComunicacion=MedioComunicacion::where('f10_rowid_ambito', 3)->get();
 
          //Se obtienen los temas
          $vArrayTema= Tema::all();
@@ -34,7 +34,8 @@ class PrensaInternacionalController extends Controller
              'strTituloFormulario'=> 'Titulares Prensa Internacional',
              'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
              'ArrayTema'=>$vArrayTema,
-             'ArrayEstructura'=> $vArrayEstructura]
+             'ArrayEstructura'=> $vArrayEstructura,
+             'Post'=>'prensa-internacional']
          );
     }
 
@@ -147,7 +148,7 @@ class PrensaInternacionalController extends Controller
 
             // return response()
             // ->json(['status' => true]);
-            return view('frmConfirmacion',['strMensaje'=>'Creacion exitosa']);
+            return view('frmConfirmacion',['strMensaje'=>'Creacion exitosa','return'=>'prensa-internacional']);
                 
         } catch (\Throwable $th) {
             DB::rollBack();

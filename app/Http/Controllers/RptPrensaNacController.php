@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\MedioComunicacion;
-use App\Estructura;
-class rptPrensaInterController extends Controller
+
+class RptPrensaNacController extends Controller
 {
     public function index($id)
     {
         //se obtienen los medios de comunicacion 
-        $vArrayMedioComunicacion= MedioComunicacion::where('f10_rowid_ambito', 3)->get();
+        $vArrayMedioComunicacion= MedioComunicacion::where('f10_rowid_ambito', 2)->get();
 
         //Se obtienen los tipos de medios 
         $vArrayEstructura = Estructura::all();
@@ -41,25 +39,24 @@ class rptPrensaInterController extends Controller
             case 1: 
                     //FRECUENCIA DE TEMA X MEDIO DE COMUNICACION  Y TIPO DE MEDIO
                 $sql= 'SELECT 
-                        t14.f14_descripcion as f_tipo_medio, 
-                        t10.f10_descripcion as f_medio_descripcion,
-                        t12.f12_descripcion as f_tema_descripcion,
-                        sum(t200.f200_valor) as f_frecuencia
-                        from t200_tema_formulario t200
-                        inner join t12_tema t12 on f12_rowid = t200.f200_rowid_tema
-                        inner join t50_formulario t50 on f50_rowid = t200.f200_rowid_formulario
-                        inner join t10_medio_comunicacion t10 on t10.f10_rowid= t50.f50_rowid_medio_comunic
-                        inner join t14_estructura t14 on t14.f14_rowid = t50.f50_rowid_estructura 
-                        where (t10.f10_rowid = (:medio_comunic) or (:medio_comunic)  is null )
-                        and (f50_rowid_estructura = (:tipo_medio) or (:tipo_medio)  is null )
-                        and (f50_fecha >= (:desde)  or (:desde)  is null )
-                        and (f50_fecha <= (:hasta) or (:hasta)  is null )
-                        and f50_rowid_ambito =3
-                        GROUP by 
-                        t14.f14_descripcion,
-                        t10.f10_descripcion,
-                        t12.f12_descripcion
-                        order by t10.f10_descripcion';
+                    t14.f14_descripcion as f_tipo_medio, 
+                    t10.f10_descripcion as f_medio_descripcion,
+                    t12.f12_descripcion as f_tema_descripcion,
+                    sum(t200.f200_valor) as f_frecuencia
+                    from t200_tema_formulario t200
+                    inner join t12_tema t12 on f12_rowid = t200.f200_rowid_tema
+                    inner join t50_formulario t50 on f50_rowid = t200.f200_rowid_formulario
+                    inner join t10_medio_comunicacion t10 on t10.f10_rowid= t50.f50_rowid_medio_comunic
+                    inner join t14_estructura t14 on t14.f14_rowid = t50.f50_rowid_estructura 
+                    where (t10.f10_rowid = (:medio_comunic) or (:medio_comunic)  is null )
+                    and (f50_rowid_estructura = (:tipo_medio) or (:tipo_medio)  is null )
+                    and (f50_fecha >= (:desde)  or (:desde)  is null )
+                    and (f50_fecha <= (:hasta) or (:hasta)  is null )
+                    GROUP by 
+                    t14.f14_descripcion,
+                    t10.f10_descripcion,
+                    t12.f12_descripcion
+                    order by t10.f10_descripcion';
                     
                     $vStrReporte=1;
                 /*$res_frec_tema=DB::select($sql_frecuen_tema ,
@@ -70,13 +67,12 @@ class rptPrensaInterController extends Controller
                 );*/
                 break;
             case 2:
-                //TEMA RELEVANTE X MEDIO DE COMUNICACION  Y TIPO DE MEDIO
+
                 $sql='SELECT
                         f10_descripcion f_medio_descripcion,
                         f14_descripcion f_tipo_medio,
-                        f12_descripcion f_tema_descripcion,
-                        count(f12_rowid) f_cantidad,
-                        0 f_porcentaje 
+                        f12_descripcion f_tema_descripcion ,
+                        t50.f50_fecha  f_fecha
                         FROM 
                         t50_formulario t50
                         inner join t12_tema t12 on t12.f12_rowid = f50_rowid_tema_relevante
@@ -86,13 +82,13 @@ class rptPrensaInterController extends Controller
                         and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
                         and (f50_fecha >= (:desde)  or (:desde)  is null )
                         and (f50_fecha <= (:hasta) or (:hasta)  is null )
-                        and f50_rowid_ambito =3
+                        and f50_rowid_ambito =2
                         group by 
                         f14_descripcion,
                         f10_descripcion,
                         f12_descripcion,
-                        0
-                        ORDER BY f10_descripcion';
+                        t50.f50_fecha
+                        ORDER BY f10_descripcion,f50_fecha';
 
                         $vStrReporte=2;
                     
@@ -116,6 +112,7 @@ class rptPrensaInterController extends Controller
                     and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
                     and (f50_fecha >= (:desde)  or (:desde)  is null )
                     and (f50_fecha <= (:hasta) or (:hasta)  is null )
+                    and f50_rowid_ambito =2
                     ORDER BY f10_descripcion,f50_fecha';
 
             $vStrReporte=3;
@@ -133,22 +130,7 @@ class rptPrensaInterController extends Controller
 
          //observacion 
 
-        if ($request->selectReporte ==2){
-            $vIntPorcentaje=0;
-            
-            foreach ($resultado as &$res) {
-                $vIntPorcentaje =$vIntPorcentaje+ $res->f_cantidad;
-            }
 
-            unset($res);
-
-            foreach ($resultado as &$res) {
-                $res->f_porcentaje  = (100 * $res->f_cantidad)/$vIntPorcentaje;
-            }
-
-            unset($res);
-           
-        }
 
 
        // $sql_tema_relevante= 'SELECT'

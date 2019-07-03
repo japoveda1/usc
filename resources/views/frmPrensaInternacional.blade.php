@@ -1,5 +1,5 @@
 @extends('frmPrensa',
-['post'=>'prensa-internacional',
+['post'=>$Post,
 'strTituloFormulario'=>$strTituloFormulario,
 'ArrayEstructura'=>$ArrayEstructura])
 
@@ -7,17 +7,7 @@
 
 @section('checkbox')
 
-<!--<div class="form-group">
-      <label class="control-label">Medio Analizado</label>
 
-          <select class="form-control" name='iptMedioComunicacion'>
-          @foreach ($ArrayMedioComunicacion as $objMC)
-              <option value='{{$objMC->f10_rowid}}'>{{ $objMC->f10_descripcion}}</option>
-          @endforeach
-
-          </select>
-
-    </div>-->
 
 <span>Archivo de portada prensa escrita o digital</span>
 
