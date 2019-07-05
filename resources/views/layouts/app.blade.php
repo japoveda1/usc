@@ -137,8 +137,7 @@
 
         <div class="page-container">
 
-        @guest
-        @else
+
         
 
             <div class="page-sidebar-wrapper">
@@ -147,7 +146,7 @@
                         <li class="nav-item start active open">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-book-open"></i>
-                                <span class="title">Titulares de Prensa</span>
+                                <span class="title">Prensa</span>
                                 <span class="selected"></span>
                                 <span class="arrow open"></span>
                             </a>
@@ -155,7 +154,7 @@
                                 <li class="nav-item start active open">
                                     <a href="/prensa-internacional" class="nav-link ">
                                         
-                                        <span class="title">internacional</span>
+                                        <span class="title">Internacional</span>
                                         <span class="selected"></span>
                                     </a>
                                 </li>
@@ -179,30 +178,19 @@
                         <li class="nav-item start active open">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-screen-desktop"></i>
-                                <span class="title">Titulares de Television</span>
+                                <span class="title">Television</span>
                                 <span class="selected"></span>
                                 <span class="arrow open"></span>
                             </a>
                             <ul class="sub-menu">
-                                <li class="nav-item start active open">
-                                    <a href="prensa-internacional" class="nav-link ">
-                                        
-                                        <span class="title">internacional</span>
-                                        <span class="selected"></span>
+                                <li class="nav-item start ">
+                                    <a href="/television-regional" class="nav-link ">
+                                       <span class="title">Regional</span>
                                     </a>
                                 </li>
                                 <li class="nav-item start ">
-                                    <a href="prensa-regional" class="nav-link ">
-                                       
-                                        <span class="title">Regional</span>
-                                        
-                                    </a>
-                                </li>
-                                <li class="nav-item start ">
-                                    <a href="prensa-nacional" class="nav-link ">
-                                        
+                                    <a href="/television-nacional" class="nav-link ">
                                         <span class="title">Nacional</span>
-                                        
                                     </a>
                                 </li>
                             </ul>
@@ -210,26 +198,17 @@
                         <li class="nav-item start active open">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="glyphicon glyphicon-check"></i>
-                                <span class="title">Seguimiento Electorial</span>
+                                <span class="title">Medio Digital</span>
                                 <span class="selected"></span>
                                 <span class="arrow open"></span>
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item start active open">
-                                    <a href="prensa-internacional" class="nav-link ">
-                                        
-                                        <span class="title">Medios Digitales</span>
+                                    <a href="/404" class="nav-link ">
+                                        <span class="title">Pendiente</span>
                                         <span class="selected"></span>
                                     </a>
                                 </li>
-                                <li class="nav-item start ">
-                                    <a href="prensa-regional" class="nav-link ">
-                                       
-                                        <span class="title">Television</span>
-                                        
-                                    </a>
-                                </li>
-
                             </ul>
                         </li>
                         <li class="nav-item start active open">
@@ -240,20 +219,42 @@
                                 <span class="arrow open"></span>
                             </a>
                             <ul class="sub-menu">
-                                <li class="nav-item start active open">
-                                    <a href="/reporte-prensa-inter/1" class="nav-link ">
-                                        
-                                        <span class="title">Prensa Escrita Internacional</span>
-                                        <span class="selected"></span>
+                            <li class="nav-item  ">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="icon-notebook"></i>
+                                        <span class="title">Prensa</span>
+                                        <span class="arrow"></span>
                                     </a>
+                                    <ul class="sub-menu">
+                                        <li class="nav-item ">
+                                            <a href="/reporte-prensa-inter/1" class="nav-link " > Internacional </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href="/reporte-prensa-nac/2" class="nav-link " > Nacional </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href="/reporte-prensa-reg/3" class="nav-link " > Regional </a>
+                                        </li>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li class="nav-item start ">
-                                    <a href="prensa-regional" class="nav-link ">
-                                       
+                                <li class="nav-item  ">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="icon-notebook"></i>
                                         <span class="title">Television</span>
-                                        
+                                        <span class="arrow"></span>
                                     </a>
+                                    <ul class="sub-menu">
+                                        <li class="nav-item ">
+                                            <a href="/reporte-tv-nac/2" class="nav-link " > Nacional </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href="/reporte-tv-reg/3" class="nav-link " > Regional </a>
+                                        </li>
+
+                                    </ul>
                                 </li>
+
 
                             </ul>
                         </li>
@@ -264,7 +265,7 @@
 
             </div>
 
-            @endguest
+   
 
 
             <div class="page-content-wrapper">
@@ -894,6 +895,14 @@
             <script src="../js/modules/data.js"></script>
             <script src="../js/modules/exporting.js"></script>
             <script src="../js/modules/export-data.js"></script>
-            @yield('scripts')
+
+                        <!-- BEGIN PAGE LEVEL PLUGINS -->
+            <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+            <!-- END PAGE LEVEL PLUGINS -->
+            <!-- BEGIN THEME GLOBAL SCRIPTS -->
+            <!-- END THEME GLOBAL SCRIPTS -->
+            <!-- BEGIN PAGE LEVEL SCRIPTS -->
+            <script src="../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
+              @yield('scripts')
 </body>
 </html>

@@ -17,8 +17,6 @@
                    <div class="fileinput-preview fileinput-exists thumbnail" 
                    style="max-width: 200px; max-height: 150px;">
                    </div>
-          
-        
                     <input type="file" name="inputArchivo">
         
         </div>

@@ -13,12 +13,18 @@
 
 
 </div>
-    <form action="{{$post}}" method="post">
+    <form action="{{$post}}" method="post" enctype="multipart/form-data">
         @csrf
-        <div class="form-group">
+        <div class="form-group  {{ $errors->has('inputCorreo') ? ' has-error' : '' }}">
             
             <label class ="caption-subject bold uppercase" for="inputCorreo">Correo Analista:</label>
             <input type="email" name="inputCorreo" class="form-control" id="inputCorreo" aria-describedby="emailHelp" placeholder="Ingrese correo electronico del analista">
+        
+            @if ($errors->has('inputCorreo'))
+                  <span class="help-block" >
+                      {{ $errors->first('inputCorreo') }}
+                  </span>
+            @endif
         </div>
 
         <div class="form-group">
@@ -46,7 +52,7 @@
 <div class="row">
 
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-4 ">
           <label class ="caption-subject bold uppercase" for="selectNativoDigital" >Nativo Digital</label>
           <select class="form-control" name='selectNativoDigital'>
                 <option value=0>No</option>
@@ -55,23 +61,39 @@
         </div>
         </div>
 
-<div class="row">
+      <div class="row">
 
-  <div class="form-group col-md-4">
+        <div class="form-group col-md-4 {{ $errors->has('inputCorreo') ? ' has-error' : '' }}">
             <label class ="caption-subject bold uppercase" for="inputFecha">Dia Analizado:</label>
             <input type="date" name="inputFecha" class="form-control" id="inputFecha" aria-describedby="fechaHelp" placeholder="Seleccione fecha">
+            @if ($errors->has('inputFecha'))
+                  <span class="help-block" >
+                      {{ $errors->first('inputFecha') }}
+                  </span>
+            @endif
         </div>
 
-        </div>
+      </div>
       
 
-        <div>
+        <div class="form-group">
           @yield('checkbox')
         </div>
-  
         <div class="form-group">
+            
+            <label for="inputLink1">Link 1:</label>
+            <input type="url" name="inputLink1" class="form-control" id="inputLink1" aria-describedby="inputLink1" placeholder="Enlace de apoyo">
+        
+        </div>
+  
+        <div class="form-group {{ $errors->has('inputCorreo') ? ' has-error' : '' }}">
             <label class ="caption-subject bold uppercase" for="email">Titular:</label>
             <input type="text" name="inputTitularPortada" class="form-control" id="inputTitularPortada" aria-describedby="emailHelp" placeholder="Ingrese el titular del medio de comunicacion">
+            @if ($errors->has('inputTitularPortada'))
+                  <span class="help-block" >
+                      {{ $errors->first('inputTitularPortada') }}
+                  </span>
+            @endif
         </div>
         <div class="form-group">
         <label class ="caption-subject bold uppercase" for=""> FRECUENCIA DE MENCIONES DE TEMAS EN PORTADA: </label> 
@@ -121,7 +143,7 @@
             <textarea class="form-control" id="observacion" rows="3" name="txtAreaObserv"></textarea>
         </div>
 
-        <input type="submit" value="Guardar">
+        <button type="submit" class="btn green">Guardar</button>
     </form>
 
   </div>

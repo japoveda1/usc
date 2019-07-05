@@ -13,38 +13,37 @@ use App\Link;
 use App\TemaFormulario;
 use App\Models\PrensaInternacionalModel;
 
-class PrensaNacionalController extends Controller
+class TvNacionalController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
     public function __construct()
     {
        $this->middleware('auth');
     }
     
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        //se obtienen los medios de comunicacion 
-        $vArrayMedioComunicacion=MedioComunicacion::where('f10_rowid_ambito', 2)
-                                                    ->where('f10_rowid_estructura',4)->get();
+            //se obtienen los medios de comunicacion 
+            $vArrayMedioComunicacion=MedioComunicacion::where('f10_rowid_ambito', 2)
+            ->where('f10_rowid_estructura',2)->get();
 
-        //Se obtienen los temas
-        $vArrayTema= Tema::all();
+            //Se obtienen los temas
+            $vArrayTema= Tema::all();
 
-        //
-        $vArrayEstructura = Estructura::all();
-        
-        return view('frmPrensaInternacional',[
-            'strTituloFormulario'=> 'Titulares Prensa Nacional',
+            //
+            $vArrayEstructura = Estructura::all();
+
+            return view('frmPrensaInternacional',[
+            'strTituloFormulario'=> 'Titulares Televesion Nacional',
             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
             'ArrayTema'=>$vArrayTema,
             'ArrayEstructura'=> $vArrayEstructura,
             'Post'=>'prensa-nacional']
-        );
+            );
     }
 
     /**
@@ -76,12 +75,9 @@ class PrensaNacionalController extends Controller
             'inputFecha.required'=>'El dia analizado es obligatorio',
             'inputTitularPortada.required'=>'El titular del medioes es obligatorio'
         ]);
-
+        
         try {
-           
-
-    
-    
+            //$validated = $request->validated();
 
             DB::beginTransaction();
             
@@ -165,9 +161,7 @@ class PrensaNacionalController extends Controller
                 };
 
             };
-            
-            
-            
+
             if(empty($request->inputLink1) == false){
                 Link::create([
                     'f18_descripcion'=>$request->inputLink1,
@@ -176,13 +170,7 @@ class PrensaNacionalController extends Controller
         };
         
             
-            
-            
             DB::commit();
-
-
-
-
 
             // return response()
             // ->json(['status' => true]);
@@ -194,8 +182,6 @@ class PrensaNacionalController extends Controller
             abort(500,$th->getMessage());
             //echo $th->getMessage();
         }
-
-
 
 
     }

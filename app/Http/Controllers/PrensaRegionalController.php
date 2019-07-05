@@ -8,11 +8,18 @@ use App\Tema;
 use App\Formulario;
 use App\Estructura;
 use App\TemaFormulario;
+use App\Archivo;
+use App\Link;
 use App\Models\PrensaInternacionalModel;
 use Illuminate\Http\Request;
 
 class PrensaRegionalController extends Controller
 {
+
+    public function __construct()
+    {
+       $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +28,8 @@ class PrensaRegionalController extends Controller
     public function index()
     {
          //se obtienen los medios de comunicacion 
-         $vArrayMedioComunicacion=MedioComunicacion::where('f10_rowid_ambito', 1)->get();
+         $vArrayMedioComunicacion=MedioComunicacion::where('f10_rowid_ambito', 1)
+                                                    ->where('f10_rowid_estructura',4)->get();
 
          //Se obtienen los temas
          $vArrayTema= Tema::all();
@@ -57,12 +65,34 @@ class PrensaRegionalController extends Controller
      */
     public function store(Request $request)
     {
-      
+        $this->validate($request,
+        [
+            'inputCorreo'=>'required',
+            'inputFecha'=>'required',
+            'inputTitularPortada'=>'required'
+        ],
+        [
+            'inputCorreo.required'=>'El correo es obligatorio',
+            'inputFecha.required'=>'El dia analizado es obligatorio',
+            'inputTitularPortada.required'=>'El titular del medioes es obligatorio'
+        ]);
         try {
             //$validated = $request->validated();
 
             DB::beginTransaction();
-            //$v= ($request->checkTemaRelevante  == 'on') ? 1 : 0;
+            
+            $vIntRowidArchivo=0;
+
+            if($request->hasFile('inputArchivo')){
+                $file = $request->file('inputArchivo');
+                $file_name = time().$file->getClientOriginalName();
+                $file->move(public_path().'/images/',$file_name );
+
+                $vIntRowidArchivo= Archivo::create(
+                    ['f26_descripcion' => $file_name]
+                )->get(['f26_rowid'])->last();
+            };
+
             $vIntRowidFormulario = Formulario::create(
                 [
                     'f50_estado'=>0,
@@ -131,6 +161,14 @@ class PrensaRegionalController extends Controller
                 };
 
             };
+
+            if(empty($request->inputLink1) == false){
+                Link::create([
+                    'f18_descripcion'=>$request->inputLink1,
+                    'f18_rowid_formulario'=>$vIntRowidFormulario->f50_rowid
+                ]);
+        };
+        
   
             DB::commit();
 
@@ -140,8 +178,8 @@ class PrensaRegionalController extends Controller
                 
         } catch (\Throwable $th) {
             DB::rollBack();
-            abort(500,$th->getMessage());
-            //echo $th->getMessage();
+            //abort(500,$th->getMessage());
+            echo $th->getMessage();
         }
 
 

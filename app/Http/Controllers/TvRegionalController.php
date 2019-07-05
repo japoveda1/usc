@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\MedioComunicacion;
@@ -9,41 +8,39 @@ use App\Tema;
 use App\Formulario;
 use App\Estructura;
 use App\Archivo;
-use App\Link;
 use App\TemaFormulario;
+use App\Link;
 use App\Models\PrensaInternacionalModel;
 
-class PrensaNacionalController extends Controller
+class TvRegionalController extends Controller
 {
+    public function __construct()
+    {
+       $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
-    public function __construct()
-    {
-       $this->middleware('auth');
-    }
-    
     public function index()
     {
-        //se obtienen los medios de comunicacion 
-        $vArrayMedioComunicacion=MedioComunicacion::where('f10_rowid_ambito', 2)
-                                                    ->where('f10_rowid_estructura',4)->get();
+            //se obtienen los medios de comunicacion 
+         $vArrayMedioComunicacion=MedioComunicacion::where('f10_rowid_ambito', 1)
+         ->where('f10_rowid_estructura',2)->get();
 
         //Se obtienen los temas
         $vArrayTema= Tema::all();
 
         //
         $vArrayEstructura = Estructura::all();
-        
+
         return view('frmPrensaInternacional',[
-            'strTituloFormulario'=> 'Titulares Prensa Nacional',
-            'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
-            'ArrayTema'=>$vArrayTema,
-            'ArrayEstructura'=> $vArrayEstructura,
-            'Post'=>'prensa-nacional']
+        'strTituloFormulario'=> 'Titulares Televesion Regional',
+        'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
+        'ArrayTema'=>$vArrayTema,
+        'ArrayEstructura'=> $vArrayEstructura,
+        'Post'=>'prensa-regional']
         );
     }
 
@@ -65,6 +62,7 @@ class PrensaNacionalController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request,
         [
             'inputCorreo'=>'required',
@@ -74,14 +72,10 @@ class PrensaNacionalController extends Controller
         [
             'inputCorreo.required'=>'El correo es obligatorio',
             'inputFecha.required'=>'El dia analizado es obligatorio',
-            'inputTitularPortada.required'=>'El titular del medioes es obligatorio'
+            'inputTitularPortada.required'=>'El titular es obligatorio'
         ]);
-
         try {
-           
-
-    
-    
+            //$validated = $request->validated();
 
             DB::beginTransaction();
             
@@ -100,18 +94,18 @@ class PrensaNacionalController extends Controller
             $vIntRowidFormulario = Formulario::create(
                 [
                     'f50_estado'=>0,
-                    'f50_descripcion'=> "Titulares Prensa Nacional",
+                    'f50_descripcion'=> "Titulares Prensa Regional",
                     'f50_correo'=>$request->inputCorreo,
                     'f50_fecha'=>$request->inputFecha,
                     'f50_rowid_medio_comunic'=>$request->selectMedioComunic,
                     'f50_rowid_tema_relevante'=>$request->selectRelevanteTema ,
                     'f50_observacion'=>$request->txtAreaObserv,
-                    'f50_rowid_ambito'=>3,
+                    'f50_rowid_ambito'=>1,
                     'f50_rowid_estructura'=>$request->selectEstructura,
                     'f50_nativo_digital'=>$request->selectNativoDigital,
                     'f50_titular_medio_comunic'=>$request->inputTitularPortada,
                     //'f50_rowid_archivo'=>$request->
-                    'f50_titular_solo_portada'=>2,
+                    'f50_titular_solo_portada'=>1,
                     'f50_titular_solo_interior'=>0
                     //'f50_titular_interior_1'=>$request->
                     //'f50_titular_interior_2'=>$request->
@@ -165,9 +159,7 @@ class PrensaNacionalController extends Controller
                 };
 
             };
-            
-            
-            
+
             if(empty($request->inputLink1) == false){
                 Link::create([
                     'f18_descripcion'=>$request->inputLink1,
@@ -175,19 +167,12 @@ class PrensaNacionalController extends Controller
                 ]);
         };
         
-            
-            
-            
+  
             DB::commit();
-
-
-
-
 
             // return response()
             // ->json(['status' => true]);
-            return view('frmConfirmacion',['strMensaje'=>'Creacion exitosa',
-            'return'=>'prensa-nacional']);
+            return view('frmConfirmacion',['strMensaje'=>'Creacion exitosa','return'=>'prensa-regional']);
                 
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -198,6 +183,8 @@ class PrensaNacionalController extends Controller
 
 
 
+        
+        //return redirect()->route('prensa-internacional.index');
     }
 
     /**

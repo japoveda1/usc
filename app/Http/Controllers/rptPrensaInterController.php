@@ -6,21 +6,31 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\MedioComunicacion;
 use App\Estructura;
+
 class rptPrensaInterController extends Controller
 {
+    public function __construct()
+    {
+       $this->middleware('auth');
+    }
+
     public function index($id)
     {
         //se obtienen los medios de comunicacion 
-        $vArrayMedioComunicacion= MedioComunicacion::where('f10_rowid_ambito', 3)->get();
+        $vArrayMedioComunicacion= MedioComunicacion::where('f10_rowid_ambito', 3)
+                                                    ->where('f10_rowid_estructura',4)->get();
 
         //Se obtienen los tipos de medios 
         $vArrayEstructura = Estructura::all();
         
         return view('frmRptPrensaInternacional',[
+            'post'=>'/consultarPrensaInter',
+            'strTituloFormulario'=> 'Reporte Prensa Internacional',
             'seccion'=> '0',
             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
             'ArrayEstructura'=> $vArrayEstructura,
-            'resultado'=>[]]
+            'resultado'=>[],
+            'presentacionRpt'=>'99']
         );
         
         ;
@@ -34,8 +44,10 @@ class rptPrensaInterController extends Controller
 
          //identificar la presentacion del reporte tabla o grafico
         // se retorna el   $request->selectPresentacionRpt
+        
+        if($request->selectMedioComunic == 2){
 
-
+        };
          //identificar que reporte frecuencia relevante 
          switch ($request->selectReporte) {
             case 1: 
@@ -55,6 +67,7 @@ class rptPrensaInterController extends Controller
                         and (f50_fecha >= (:desde)  or (:desde)  is null )
                         and (f50_fecha <= (:hasta) or (:hasta)  is null )
                         and f50_rowid_ambito =3
+                        and f10_rowid_estructura = 4
                         GROUP by 
                         t14.f14_descripcion,
                         t10.f10_descripcion,
@@ -70,6 +83,14 @@ class rptPrensaInterController extends Controller
                 );*/
                 break;
             case 2:
+            $this->validate($request,
+            [
+                'selectMedioComunic'=>'required',
+            ],
+            [
+                'selectMedioComunic.required'=>'Para el reporte "Tema relevante" es obligatorio el medio de comunicacion',
+            ]);
+    
                 //TEMA RELEVANTE X MEDIO DE COMUNICACION  Y TIPO DE MEDIO
                 $sql='SELECT
                         f10_descripcion f_medio_descripcion,
@@ -87,6 +108,7 @@ class rptPrensaInterController extends Controller
                         and (f50_fecha >= (:desde)  or (:desde)  is null )
                         and (f50_fecha <= (:hasta) or (:hasta)  is null )
                         and f50_rowid_ambito =3
+                        and f10_rowid_estructura = 4
                         group by 
                         f14_descripcion,
                         f10_descripcion,
@@ -116,6 +138,8 @@ class rptPrensaInterController extends Controller
                     and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
                     and (f50_fecha >= (:desde)  or (:desde)  is null )
                     and (f50_fecha <= (:hasta) or (:hasta)  is null )
+                    and f50_rowid_ambito =3
+                    and f10_rowid_estructura = 4
                     ORDER BY f10_descripcion,f50_fecha';
 
             $vStrReporte=3;

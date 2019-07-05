@@ -11,11 +11,12 @@
 
 <div class="portlet-title">
 <div class="caption font-red-sunglo">
-      <h2 class="caption-subject bold uppercase">Reporte</h2>
+   
+      <h2 class="caption-subject bold uppercase">{{$strTituloFormulario}}</h2>
   </div>
 
 </div>
-    <form action="/consultar" method="get" target="_blank">
+    <form action="{{$post}}" method="get" target="_blank">
         
         <div class="row">
           <div class="form-group col-md-4">
@@ -37,7 +38,7 @@
         </div>
 
         <div class="row">
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-4 {{ $errors->has('selectMedioComunic') ? ' has-error' : '' }}">
             <label class ="caption-subject bold uppercase" for="selectMedioComunic" >Medio Analisado:</label>
             <select class="form-control" name='selectMedioComunic'>
               <option value=''>Seleccionar ...</option>
@@ -45,6 +46,11 @@
                   <option value='{{$objMC->f10_rowid}}'>{{ $objMC->f10_descripcion}}</option>
               @endforeach
             </select>
+            @if ($errors->has('selectMedioComunic'))
+                  <span class="help-block" >
+                      {{ $errors->first('selectMedioComunic') }}
+                  </span>
+            @endif
           </div>
         </div>
 
@@ -239,7 +245,7 @@
 
 var resultado_json =  {!! json_encode($resultado) !!};
 var seccion = {!! json_encode($seccion)!!};
-var presentacionRpt ={!! json_encode($presentacionRpt)!!};
+var presentacionRpt = {!! json_encode($presentacionRpt)!!};
 var ArrayTemas =[];
 
 var ArrayCompuesto =[{medio:"",tema:[""]}];

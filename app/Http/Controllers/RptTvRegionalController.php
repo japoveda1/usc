@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\MedioComunicacion;
 use App\Estructura;
 
-class RptPrensaRegController extends Controller
-{
-
+class RptTvRegionalController extends Controller
+{   
     public function __construct()
     {
        $this->middleware('auth');
@@ -19,14 +17,14 @@ class RptPrensaRegController extends Controller
     {
         //se obtienen los medios de comunicacion 
         $vArrayMedioComunicacion= MedioComunicacion::where('f10_rowid_ambito', 1)
-                                                    ->where('f10_rowid_estructura',4)->get();
+                                                    ->where('f10_rowid_estructura',2)->get();
 
         //Se obtienen los tipos de medios 
         $vArrayEstructura = Estructura::all();
         
         return view('frmRptPrensaInternacional',[
-            'post'=>'/consultarPrensaReg',
-            'strTituloFormulario'=> 'Reporte Prensa Regional',
+            'post'=>'/consultarTvNac',
+            'strTituloFormulario'=> 'Reportes Television Regional',
             'seccion'=> '0',
             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
             'ArrayEstructura'=> $vArrayEstructura,
@@ -65,8 +63,8 @@ class RptPrensaRegController extends Controller
                     and (f50_rowid_estructura = (:tipo_medio) or (:tipo_medio)  is null )
                     and (f50_fecha >= (:desde)  or (:desde)  is null )
                     and (f50_fecha <= (:hasta) or (:hasta)  is null )
-                    and f50_rowid_ambito = 1
-                    and f50_rowid_estructura = 4
+                    and f50_rowid_ambito =1
+                    and f50_rowid_estructura = 2
                     GROUP by 
                     t14.f14_descripcion,
                     t10.f10_descripcion,
@@ -97,8 +95,7 @@ class RptPrensaRegController extends Controller
                         and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
                         and (f50_fecha >= (:desde)  or (:desde)  is null )
                         and (f50_fecha <= (:hasta) or (:hasta)  is null )
-                        and f50_rowid_ambito =1
-                        and f50_rowid_estructura = 4
+                        and f50_rowid_ambito =2
                         group by 
                         f14_descripcion,
                         f10_descripcion,
@@ -129,7 +126,6 @@ class RptPrensaRegController extends Controller
                     and (f50_fecha >= (:desde)  or (:desde)  is null )
                     and (f50_fecha <= (:hasta) or (:hasta)  is null )
                     and f50_rowid_ambito =2
-                    and f50_rowid_estructura = 4
                     ORDER BY f10_descripcion,f50_fecha';
 
             $vStrReporte=3;
