@@ -39,7 +39,12 @@
         <link href="../assets/layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" /> </head>
-
+        <!--Multiselect-->
+        <link href="../assets/global/plugins/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+        <!--Agregar elementos -->
+        <link href="../assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+     
 </head>
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid">
     <div id="app">
@@ -145,6 +150,14 @@
                     <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
                         <li class="nav-item start active open">
                             <a href="javascript:;" class="nav-link nav-toggle">
+                                <span class="title">AGENDA MEDIATICA</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item ">
+                            <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-book-open"></i>
                                 <span class="title">Prensa</span>
                                 <span class="selected"></span>
@@ -175,12 +188,13 @@
 
                             </ul>
                         </li>
-                        <li class="nav-item start active open">
+
+                        <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-screen-desktop"></i>
                                 <span class="title">Television</span>
-                                <span class="selected"></span>
-                                <span class="arrow open"></span>
+                            
+                                <span class="arrow "></span>
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item start ">
@@ -195,23 +209,8 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item start active open">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="glyphicon glyphicon-check"></i>
-                                <span class="title">Medio Digital</span>
-                                <span class="selected"></span>
-                                <span class="arrow open"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item start active open">
-                                    <a href="/404" class="nav-link ">
-                                        <span class="title">Pendiente</span>
-                                        <span class="selected"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item start active open">
+
+                        <li class="nav-item ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="glyphicon glyphicon-list-alt"></i>
                                 <span class="title">Reportes</span>
@@ -257,7 +256,114 @@
 
 
                             </ul>
+                        
+                        
+                        
                         </li>
+
+                        <li class="nav-item start active open">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <span class="title">Seguimiento Electoral</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-screen-desktop"></i>
+                                <span class="title">Television</span>
+                            
+                                <span class="arrow "></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start ">
+                                    <a href="se-tv-nacional" class="nav-link ">
+                                       <span class="title">Nacional</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start ">
+                                    <a href="/se-television-regional" class="nav-link ">
+                                        <span class="title">Regional</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item ">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="glyphicon glyphicon-check"></i>
+                                <span class="title">Medio Digital</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start ">
+                                    <a href="/se-digital-nacional" class="nav-link ">
+                                       <span class="title">Nacional</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item start ">
+                                    <a href="/se-digital-regional" class="nav-link ">
+                                        <span class="title">Regional</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item ">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="glyphicon glyphicon-list-alt"></i>
+                                <span class="title">Reportes</span>
+                                <span class="selected"></span>
+                                <span class="arrow open"></span>
+                            </a>
+                            <ul class="sub-menu">
+                            <li class="nav-item  ">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="icon-notebook"></i>
+                                        <span class="title">Prensa</span>
+                                        <span class="arrow"></span>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="nav-item ">
+                                            <a href="/reporte-prensa-inter/1" class="nav-link " > Internacional </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href="/reporte-prensa-nac/2" class="nav-link " > Nacional </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href="/reporte-prensa-reg/3" class="nav-link " > Regional </a>
+                                        </li>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item  ">
+                                    <a href="javascript:;" class="nav-link nav-toggle">
+                                        <i class="icon-notebook"></i>
+                                        <span class="title">Television</span>
+                                        <span class="arrow"></span>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="nav-item ">
+                                            <a href="/reporte-tv-nac/2" class="nav-link " > Nacional </a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href="/reporte-tv-reg/3" class="nav-link " > Regional </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+
+                            </ul>
+                        
+                        
+                        
+                        </li>
+
 
                     </ul>
 
@@ -903,6 +1009,16 @@
             <!-- END THEME GLOBAL SCRIPTS -->
             <!-- BEGIN PAGE LEVEL SCRIPTS -->
             <script src="../assets/pages/scripts/profile.min.js" type="text/javascript"></script>
-              @yield('scripts')
+
+            <script src="../assets/global/plugins/bootstrap-multiselect/js/bootstrap-multiselect.js" type="text/javascript"></script>
+            <script src="../assets/pages/scripts/components-bootstrap-multiselect.min.js" type="text/javascript"></script>
+          
+            <script src="../assets/pages/scripts/form-repeater.min.js" type="text/javascript"></script>
+            <script src="../assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
+           
+            <script src="../assets/global/plugins/jquery-repeater/jquery.repeater.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+      
+            @yield('scripts')
 </body>
 </html>

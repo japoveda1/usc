@@ -96,7 +96,8 @@ class PrensaNacionalController extends Controller
                     ['f26_descripcion' => $file_name]
                 )->get(['f26_rowid'])->last();
             };
-
+            
+            return vIntRowidArchivo;
             $vIntRowidFormulario = Formulario::create(
                 [
                     'f50_estado'=>0,
@@ -110,7 +111,7 @@ class PrensaNacionalController extends Controller
                     'f50_rowid_estructura'=>$request->selectEstructura,
                     'f50_nativo_digital'=>$request->selectNativoDigital,
                     'f50_titular_medio_comunic'=>$request->inputTitularPortada,
-                    //'f50_rowid_archivo'=>$request->
+                    'f50_rowid_archivo'=> ($vIntRowidArchivo == 0) ? null :$vIntRowidArchivo->f26_rowid,
                     'f50_titular_solo_portada'=>2,
                     'f50_titular_solo_interior'=>0
                     //'f50_titular_interior_1'=>$request->

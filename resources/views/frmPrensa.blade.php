@@ -18,7 +18,7 @@
         <div class="form-group  {{ $errors->has('inputCorreo') ? ' has-error' : '' }}">
             
             <label class ="caption-subject bold uppercase" for="inputCorreo">Correo Analista:</label>
-            <input type="email" name="inputCorreo" class="form-control" id="inputCorreo" aria-describedby="emailHelp" placeholder="Ingrese correo electronico del analista">
+            <input type="email" name="inputCorreo"  class="form-control" id="inputCorreo" aria-describedby="emailHelp" placeholder="Ingrese correo electronico del analista">
         
             @if ($errors->has('inputCorreo'))
                   <span class="help-block" >
@@ -28,7 +28,7 @@
         </div>
 
         <div class="form-group">
-          <label class ="caption-subject bold uppercase" for="selectMedioComunic" >Medio Analisado:</label>
+          <label class ="caption-subject bold uppercase" for="selectMedioComunic" >Medio Analizado:</label>
           <select class="form-control" name='selectMedioComunic'>
             @foreach ($ArrayMedioComunicacion as $objMC)
                 <option value='{{$objMC->f10_rowid}}'>{{ $objMC->f10_descripcion}}</option>
@@ -63,9 +63,9 @@
 
       <div class="row">
 
-        <div class="form-group col-md-4 {{ $errors->has('inputCorreo') ? ' has-error' : '' }}">
+        <div class="form-group col-md-4 {{ $errors->has('inputFecha') ? ' has-error' : '' }}">
             <label class ="caption-subject bold uppercase" for="inputFecha">Dia Analizado:</label>
-            <input type="date" name="inputFecha" class="form-control" id="inputFecha" aria-describedby="fechaHelp" placeholder="Seleccione fecha">
+            <input type="date" name="inputFecha" class="form-control" id="inputFecha" aria-describedby="fechaHelp" placeholder="Seleccione una fecha">
             @if ($errors->has('inputFecha'))
                   <span class="help-block" >
                       {{ $errors->first('inputFecha') }}
@@ -86,7 +86,7 @@
         
         </div>
   
-        <div class="form-group {{ $errors->has('inputCorreo') ? ' has-error' : '' }}">
+        <div class="form-group {{ $errors->has('inputTitularPortada') ? ' has-error' : '' }}">
             <label class ="caption-subject bold uppercase" for="email">Titular:</label>
             <input type="text" name="inputTitularPortada" class="form-control" id="inputTitularPortada" aria-describedby="emailHelp" placeholder="Ingrese el titular del medio de comunicacion">
             @if ($errors->has('inputTitularPortada'))

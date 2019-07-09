@@ -96,9 +96,8 @@ class PrensaInternacionalController extends Controller
                 $vIntRowidArchivo= Archivo::create(
                     ['f26_descripcion' => $file_name]
                 )->get(['f26_rowid'])->last();
+
             };
-
-
 
             $vIntRowidFormulario = Formulario::create(
                 [
@@ -113,7 +112,7 @@ class PrensaInternacionalController extends Controller
                     'f50_rowid_estructura'=>$request->selectEstructura,
                     'f50_nativo_digital'=>$request->selectNativoDigital,
                     'f50_titular_medio_comunic'=>$request->inputTitularPortada,
-                    'f50_rowid_archivo'=>$vIntRowidArchivo->f26_rowid,
+                    'f50_rowid_archivo'=> ($vIntRowidArchivo == 0) ? null :$vIntRowidArchivo->f26_rowid,
                     'f50_titular_solo_portada'=>1,
                     'f50_titular_solo_interior'=>0
                     //'f50_titular_interior_1'=>$request->
@@ -138,14 +137,9 @@ class PrensaInternacionalController extends Controller
                     //'f50_nivel_interactividad'=>$request->
                     //'f50_rowid_postura'
 
-                    //'f50_correo'=>$request->email=>
-                    //'f50_fecha'=>$request->fecha=>
-                    //'f50_rowid_medio_comunic'=>$request->iptMedioComunicacion=>
-                    //'f50_rowid_tema_relevante'=>$request->num_sig=>
-                    //'f50_observacion'=>$request->observacion
+
                 ]
             )->get(['f50_rowid'])->last();
-            
             //Se crea objeto anonimo para guardar los temas relacionados            
             $vObjTemaRel = new \stdClass();
 

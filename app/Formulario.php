@@ -31,11 +31,11 @@ class Formulario extends Model
         'f50_titular_interior_5',
         'f50_rowid_candidato_alcaldia',
         'f50_rowid_candidato_gobern',
-        'f50_rowid_origen_noticia',
+        'f50_id_origen_noticia',
         'f50_rowid_ubicacion',
         'f50_rowid_intencion',
         'f50_ind_identificacion_fuente',
-        'f50_rowid_pertinencia_fuente',
+        'f50_rowid_pertinecia_fuente',
         'f50_equilibrio_fuente',
         'f50_relevancia_valor',
         'f50_rowid_genero_periodistico',
@@ -44,7 +44,8 @@ class Formulario extends Model
         'f50_comentarios',
         'f50_compartido',
         'f50_nivel_interactividad',
-        'f50_rowid_postura'
+        'f50_rowid_postura',
+        'f50_rowid_subgenero_perio'
     ];
 
     /**
