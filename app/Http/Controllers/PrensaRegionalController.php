@@ -37,12 +37,12 @@ class PrensaRegionalController extends Controller
          //
         $vArrayEstructura = Estructura::all();
          
-         return view('frmPrensaInternacional',[
+         return view('frmPrensa',[
              'strTituloFormulario'=> 'Titulares Prensa Regional',
              'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
              'ArrayTema'=>$vArrayTema,
              'ArrayEstructura'=> $vArrayEstructura,
-             'Post'=>'prensa-regional']
+             'post'=>'prensa-regional']
          );
     }
 
@@ -83,15 +83,17 @@ class PrensaRegionalController extends Controller
             DB::beginTransaction();
             
             $vIntRowidArchivo=0;
-            echo("joah");
+
             if($request->hasFile('inputArchivo')){
                 $file = $request->file('inputArchivo');
                 $file_name = time().$file->getClientOriginalName();
                 $file->move(public_path().'/images/',$file_name );
-            echo("joah");
-                $vIntRowidArchivo= Archivo::create(
+
+                $vTemp= Archivo::create(
                     ['f26_descripcion' => $file_name]
                 )->get(['f26_rowid'])->last();
+
+                $vIntRowidArchivo = $vTemp->f26_rowid;
             };
 
             $vIntRowidFormulario = Formulario::create(
@@ -107,9 +109,10 @@ class PrensaRegionalController extends Controller
                     'f50_rowid_estructura'=>$request->selectEstructura,
                     'f50_nativo_digital'=>$request->selectNativoDigital,
                     'f50_titular_medio_comunic'=>$request->inputTitularPortada,
-                    'f50_rowid_archivo'=>($vIntRowidArchivo == 0) ? null :$vIntRowidArchivo->f26_rowid,
+                    'f50_rowid_archivo'=>($vIntRowidArchivo == 0) ? null :$vIntRowidArchivo,
                     'f50_titular_solo_portada'=>1,
-                    'f50_titular_solo_interior'=>0
+                    'f50_titular_solo_interior'=>0,
+                    'f50_tipo'=>1
                     //'f50_titular_interior_1'=>$request->
                     //'f50_titular_interior_2'=>$request->
                     //'f50_titular_interior_3'=>$request->

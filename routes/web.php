@@ -54,8 +54,24 @@ Route::resource('se-television-regional', 'SETvRegionalController');
 Route::resource('se-digital-regional', 'SEDigitalRegionalController');
 Route::resource('se-digital-nacional', 'SEDigitalNacionalController');
 
-//PRUEBAS 
-Route::get('/se-tv-nacional','SETvNacionalController@index')->name('se-television-nacional');
+
+
+
+
+//RUTAS PARA LOS FORMULARIOS PARA ANALISIS
+Route::get('/se-tv-nacional/{id}','SETvNacionalController@index')->name('formulario-se-tv-nacional');
+Route::get('/se-tv-regional/{id}','SETvNacionalController@index')->name('formulario-se-tv-regional');
+Route::get('/se-md-nacional/{id}','SETvNacionalController@index')->name('formulario-se-md-nacional');
+Route::get('/se-md-regional/{id}','SETvNacionalController@index')->name('formulario-se-md-nacional');
+
+//RUTAS PARA LOS REPORTES 
+Route::get('/rpt-se-tv-nacional/{id}','RptSETvNacionalController@index')->name('consulta-se-tv-nacional');
+Route::get('/rpt-se-tv-regional/{id}','SETvRegionalController@index')->name('consulta-se-tv-regional');
+Route::get('/rpt-se-md-nacional/{id}','SEDigitalNacionalController@index')->name('consulta-se-md-nacional');
+Route::get('/rpt-se-md-nacional/{id}','SEDigitalNacionalController@index')->name('consulta-se-md-nacional');
+
+//RUTAS PARA LAS CONSULTAS
+Route::get('/consultarSETvInter', 'RptSETvNacionalController@consultar')->name('reporte-prensa-inter');
 
 //Funciones
 Route::get('/SubGenPerio','SETvNacionalController@getSubGenPerio');

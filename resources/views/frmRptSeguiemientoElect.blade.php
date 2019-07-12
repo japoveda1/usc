@@ -33,9 +33,31 @@
         <div class="col-md-6">
           <div class="form-group">
             <label  for="selectReporte" >Reporte: </label>
-            <select class="form-control" name='selectReporte'>
-                  <option value=1>Frecuencia de Tema</option>
+            <select class="form-control" name='selectReporte' id="selectReporte">
                   <option value=2>Tema Relevante</option>
+                  <option value=3>Origen de noticia</option>
+                  <option value=4>Candidatos</option>
+                  <option value=5>Tipo de recurso</option>
+                  <option value=6>Etiquetas</option>
+                  <option value=7>Intencion</option>
+                  <option value=8>Fuentes</option>
+                  <option value=9>Genero Periodistico</option>
+                  <option value=10>Tipo de genero </option>
+                  <option value=11>Genero Periodistico</option>
+                  <option value=12>Ubicacion</option>
+                  <option value=13>Relevancion</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+          <label  for="selectReporte" >Nombre del Candidato: </label>
+            <select class="form-control" name='selectNombreCandit' id="selectNombreCandit">
+                  <option value='0'>Todos...</option>
+                  <option value='1'>Frecuencia de Tema</option>
+            
             </select>
           </div>
         </div>
@@ -106,13 +128,13 @@
     </a>
   
 <br>
-<h1>FRECUENCIA DE TEMA</h1>
+<h1>CANDIDATOS</h1>
 
 </div>
 
 @if ($presentacionRpt==1)
 <!--TABLA FRECUENCIA DE TEMA -->
-<table class="table table-bordered table-striped table-condensed flip-content">
+<!--<table class="table table-bordered table-striped table-condensed flip-content">
       <thead class="flip-content">
           <tr>
               <th width="20%">Tipo de medio</th>
@@ -135,6 +157,63 @@
         @endforeach
       </tbody>
   </table>
+
+  <table class="table table-bordered table-striped table-condensed flip-content">
+      <thead class="flip-content">
+          <tr>
+              <th width="20%">Tipo de medio</th>
+              <th>Medio de comunicacion</th>
+              <th>Cargo</th>
+              <th>Nombre Candidato</th>
+              <th>Fecha</th>
+
+          </tr>
+      </thead>
+      <tbody> 
+          <tr>
+              <td> Television </td>
+              <td> RCN Noticias </td>
+              <td> Alcalde </td>
+              <td> Alejandro Eder</td>
+              <td> 24/Junio/2019 </td>
+          </tr>
+          <tr>
+              <td> Television </td>
+              <td> RCN Noticias </td>
+              <td> Gobernador </td>
+              <td> Oscar Gamboa</td>
+              <td> 25/Junio/2019 </td>
+
+          </tr>         
+           <tr>
+              <td> Television </td>
+              <td> RCN Noticias </td>
+              <td> Alcalde </td>
+              <td> Alejandro Eder</td>
+              <td> 26/Junio/2019 </td>
+
+          </tr>
+          <tr>
+              <td> Television </td>
+              <td> RCN Noticias </td>
+              <td> Alcalde </td>
+              <td> Alejandro Eder</td>
+              <td> 27/Junio/2019 </td>
+
+          </tr>
+          <tr>
+              <td> Television </td>
+              <td> RCN Noticias </td>
+              <td> Gobernador </td>
+              <td> Oscar Gamboa</td>
+              <td> 28/Junio/2019 </td>
+
+          </tr>
+
+
+      </tbody>
+  </table>-->
+
 @endif
 
 @if($presentacionRpt==2)
@@ -161,7 +240,7 @@
         Filtros
       </a>
   <br>
-  <h1>TEMA RELEVANTE</h1>
+  <h1>CANDIDATOS</h1>
 
   </div>
   @if ($presentacionRpt==1)
@@ -248,6 +327,26 @@
 
 <script type="text/javascript">
 
+
+
+$( "#rowCandidatos" ).hide();
+
+$('#selectReporte').on('change',function(){
+  
+  var idReporte= $( "#selectReporte" ).val();
+
+  if(idReporte == 4){
+    $( "#rowCandidatos" ).show();
+  }else{
+
+    $('#selectCargo').val('0');
+    $('#selectNombreCandit').val('0');
+    $( "#rowCandidatos" ).hide();
+    console.log($( "#selectCargo" ).val());
+  }
+
+});
+    
 var resultado_json =  {!! json_encode($resultado) !!};
 var seccion = {!! json_encode($seccion)!!};
 var presentacionRpt = {!! json_encode($presentacionRpt)!!};
@@ -430,12 +529,27 @@ console.log('resultado_json: ',series);
         }
     },
         series: [{
-            name: resultado_json[0].f_medio_descripcion,
-            colorByPoint: true,
-            data: series
-        }]
+        name: 'Brands',
+        colorByPoint: true,
+        data: [{
+            name: 'Alejandro Eder',
+            y: 60,
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Oscar Gamboa',
+            y: 40
+        }, ]
+    }]
     });
   }
 
 		</script>
+
+
+
+
+
+
+
 @endsection

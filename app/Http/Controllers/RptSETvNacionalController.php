@@ -1,19 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\MedioComunicacion;
 use App\Estructura;
 
-class rptPrensaInterController extends Controller
+class RptSETvNacionalController extends Controller
 {
-    public function __construct()
-    {
-       $this->middleware('auth');
-    }
-
     public function index($id)
     {
         //se obtienen los medios de comunicacion 
@@ -23,9 +17,9 @@ class rptPrensaInterController extends Controller
         //Se obtienen los tipos de medios 
         $vArrayEstructura = Estructura::all();
         
-        return view('frmRptPrensaInternacional',[
-            'post'=>'/consultarPrensaInter',
-            'strTituloFormulario'=> 'Reporte Prensa Internacional',
+        return view('frmRptSeguiemientoElect',[
+            'post'=>'/consultarSETvInter',
+            'strTituloFormulario'=> 'Reporte Seguimiento Electoral TV Nacional',
             'seccion'=> '0',
             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
             'ArrayEstructura'=> $vArrayEstructura,
@@ -213,9 +207,10 @@ class rptPrensaInterController extends Controller
             })
             ->get();*/
 
-        return view('frmRptPrensaInternacional',
+        return view('frmRptSeguiemientoElect',
                     ['seccion'=>$vStrReporte,
                     'resultado'=>$resultado,
                     'presentacionRpt'=>$request->selectPresentacionRpt]);
     }
+
 }

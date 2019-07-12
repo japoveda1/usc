@@ -45,7 +45,8 @@ class Formulario extends Model
         'f50_compartido',
         'f50_nivel_interactividad',
         'f50_rowid_postura',
-        'f50_rowid_subgenero_perio'
+        'f50_rowid_subgenero_perio',
+        'f50_tipo'
     ];
 
     /**

@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="page-content" >
-        <img  src="../../assets/apps/img/home.jpeg" alt="...">     
+        <img  src="../../assets/apps/img/home2.jpeg" alt="...">     
     </div>
 @endsection
