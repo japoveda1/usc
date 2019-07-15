@@ -44,6 +44,7 @@
                   <option value=8>Tipo de Genero Periodistico</option>
                   <option value=9>Ubicacion</option>
                   <option value=10>Relevancion</option>
+                  <option value="11">Candidato</option>
             </select>
           </div>
         </div>

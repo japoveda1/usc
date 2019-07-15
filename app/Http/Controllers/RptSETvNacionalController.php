@@ -105,7 +105,7 @@ class RptSETvNacionalController extends Controller
                         and (f50_fecha >= (:desde)  or (:desde)  is null )
                         and (f50_fecha <= (:hasta) or (:hasta)  is null )
                         and f50_rowid_ambito =(:ambito)
-                        and f50_tipo=2
+                        and f50_tipo=(:tipo_formulario)
                         group by 
                         f14_descripcion,
                         f10_descripcion,
@@ -119,50 +119,243 @@ class RptSETvNacionalController extends Controller
 
                 break;
             case 2://origen de la noticia 
+                
+                $sql='  SELECT
+                            f10_descripcion     f_medio_descripcion,
+                            f14_descripcion     f_tipo_medio,
+                            f17_descripcion     f_desc,
+                            COUNT(f17_rowid)    f_frec
+                        FROM
+                            t50_formulario           f50
+                            INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50.f50_rowid_medio_comunic
+                            INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50.f50_rowid_estructura
+                            INNER JOIN t17_origen_noticia       t17 ON t17.f17_rowid = f50.f50_id_origen_noticia
+                        WHERE
+                            f50_rowid_ambito = (:ambito)
+                            AND f50_rowid_estructura = (:tipo_medio)
+                            AND f50_rowid_medio_comunic = (:medio_comunic)
+                            AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND f50_tipo = (:tipo_formulario)
+                        GROUP BY 
+                        f14_descripcion,
+                            f10_descripcion,
+                            f17_descripcion';
+
             
-            $vStrReporte=1;
+                $vStrNombreView='seguimiento_electoral.rpt_se_origen_noticia';
+                
             break;    
 
             case 3://tipo de recusro
+
+                $sql='SELECT
+                            f10_descripcion       f_medio_descripcion,
+                            f14_descripcion       f_tipo_medio,
+                            t19.f19_descripcion   f_desc,
+                            COUNT(t19.f19_rowid) f_frec
+                        FROM
+                            t28_titulares_ubicacion   t28
+                            INNER JOIN t50_formulario            t50 ON t50.f50_rowid = t28.f28_rowid_formulario
+                            INNER JOIN t10_medio_comunicacion    t10 ON t10.f10_rowid = t50.f50_rowid_medio_comunic
+                            INNER JOIN t14_estructura            t14 ON t14.f14_rowid = t50.f50_rowid_estructura
+                            INNER JOIN t19_tipo_recurso          t19 ON t19.f19_rowid = t28.f28_rowid_tipo_recurso
+                        WHERE
+                            f50_rowid_ambito = (:ambito)
+                            AND f50_rowid_estructura = (:tipo_medio)
+                            AND f50_rowid_medio_comunic = (:medio_comunic)
+                            AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND f50_tipo = (:tipo_formulario)
+                        GROUP BY
+                            f14_descripcion,
+                            f10_descripcion,
+                            t19.f19_descripcion';
         
-            $vStrReporte=1;
+                $vStrNombreView='seguimiento_electoral.rpt_se_tipo_recurso';
             break;  
         
             case 4://etiquetas
-        
-            $vStrReporte=1;
+                $sql='SELECT
+                            f10_descripcion     f_medio_descripcion,
+                            f14_descripcion     f_tipo_medio,
+                            f20_descripcion     f_desc,
+                            COUNT(f20_rowid)    f_frec
+                        FROM
+                            t20_etiqueta
+                            INNER JOIN t50_formulario ON f50_rowid = f20_rowid_formulario
+                            INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
+                            INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50_rowid_estructura
+                        WHERE
+                        f50_rowid_ambito = (:ambito)
+                            AND f50_rowid_estructura = (:tipo_medio)
+                            AND f50_rowid_medio_comunic = (:medio_comunic)
+                            AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND f50_tipo = (:tipo_formulario)
+                        GROUP BY
+                            f14_descripcion,
+                            f10_descripcion,
+                            f20_descripcion';
+                $vStrNombreView='seguimiento_electoral.rpt_se_etiquetas';
             break;  
             case 5://intencion
-        
-            $vStrReporte=1;
+            $sql='SELECT
+                        f10_descripcion   f_medio_descripcion,
+                        f14_descripcion   f_tipo_medio,
+                        f21_descripcion   f_desc,
+                        COUNT(f21_rowid) f_frec
+                    FROM
+                        t50_formulario
+                        INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
+                        INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50_rowid_estructura
+                        INNER JOIN t21_intencion ON f21_rowid = f50_rowid_intencion
+                    WHERE
+                            f50_rowid_ambito = (:ambito)
+                            AND f50_rowid_estructura = (:tipo_medio)
+                            AND f50_rowid_medio_comunic = (:medio_comunic)
+                            AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND f50_tipo = (:tipo_formulario)
+                    GROUP BY
+                        f14_descripcion,
+                        f10_descripcion,
+                        f21_descripcion';
+                $vStrNombreView='seguimiento_electoral.rpt_se_intencion';
             break;  
             case 6://fuentes
-        
-            $vStrReporte=1;
+                $sql='SELECT
+                            f10_descripcion   f_medio_descripcion,
+                            f14_descripcion   f_tipo_medio,
+                            f22_descripcion   f_desc,
+                            COUNT(f22_rowid) f_frec
+                        FROM
+                            t50_formulario
+                            INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
+                            INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50_rowid_estructura
+                            INNER JOIN t22_fuente ON f22_rowid = f50_ind_identificacion_fuente
+                        WHERE
+                            f50_rowid_ambito = (:ambito)
+                            AND f50_rowid_estructura = (:tipo_medio)
+                            AND f50_rowid_medio_comunic = (:medio_comunic)
+                            AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND f50_tipo = (:tipo_formulario)
+                        GROUP BY
+                            f14_descripcion,
+                            f10_descripcion,
+                            f22_descripcion';
+                $vStrNombreView='seguimiento_electoral.rpt_se_fuente';
             break;  
             case 7://Genero Periodistico
-        
-            $vStrReporte=1;
+                $sql='SELECT
+                            f10_descripcion   f_medio_descripcion,
+                            f14_descripcion   f_tipo_medio,
+                            f24_descripcion   f_desc,
+                            COUNT(f24_rowid)
+                        FROM
+                            t50_formulario
+                            INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
+                            INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50_rowid_estructura
+                            INNER JOIN t24_genero_periodistico ON f24_rowid = f50_rowid_genero_periodistico
+                        WHERE
+                            f50_rowid_ambito = (:ambito)
+                            AND f50_rowid_estructura = (:tipo_medio)
+                            AND f50_rowid_medio_comunic = (:medio_comunic)
+                            AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND f50_tipo = (:tipo_formulario)
+                        GROUP BY
+                            f14_descripcion,
+                            f10_descripcion,
+                            f24_descripcion';
+                $vStrNombreView='seguimiento_electoral.rpt_se_gen_perio';
             break;  
             case 8://tipo Genero Periodistico
-        
-            $vStrReporte=1;
+                $sql='SELECT
+                            f10_descripcion   f_medio_descripcion,
+                            f14_descripcion   f_tipo_medio,
+                            f24_descripcion   f_desc_genero,
+                            f27_descripcion   f_desc,
+                            COUNT(f27_rowid) f_frec
+                        FROM
+                            t50_formulario
+                            INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
+                            INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50_rowid_estructura
+                            INNER JOIN t27_subgen_periodistico ON f27_rowid = f50_rowid_subgenero_perio
+                            INNER JOIN t24_genero_periodistico ON f24_rowid = f27_rowid_gen_perio
+                        WHERE
+                        f50_rowid_ambito = (:ambito)
+                            AND f50_rowid_estructura = (:tipo_medio)
+                            AND f50_rowid_medio_comunic = (:medio_comunic)
+                            AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND f50_tipo = (:tipo_formulario)
+                        GROUP BY
+                            f14_descripcion,
+                            f10_descripcion,
+                            f24_descripcion,
+                            f27_descripcion';
+                $vStrNombreView='seguimiento_electoral.rpt_se_tipo_gen_perio';
             break;  
             case 9://ubicacion
-        
-            $vStrReporte=1;
+                $sql='SELECT
+                            f10_descripcion   f_medio_descripcion,
+                            f14_descripcion   f_tipo_medio,
+                            f13_descripcion   f_desc,
+                            COUNT(f13_rowid) f_frec
+                        FROM
+                            t50_formulario
+                            INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
+                            INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50_rowid_estructura
+                            INNER JOIN t13_ubicacion_mc ON f13_rowid = f50_rowid_ubicacion
+                        WHERE
+                            f50_rowid_ambito = (:ambito)
+                            AND f50_rowid_estructura = (:tipo_medio)
+                            AND f50_rowid_medio_comunic = (:medio_comunic)
+                            AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND f50_tipo = (:tipo_formulario)
+                        GROUP BY
+                            f14_descripcion,
+                            f10_descripcion,
+                            f13_descripcion';
+                $vStrNombreView='seguimiento_electoral.rpt_se_ubicacion';
             break;  
             case 10://relevante
-        
-            $vStrReporte=1;
+                $sql='';
+                $vStrNombreView='seguimiento_electoral.rpt_se_relevante';
             break;  
             case 11://canditos
                 //validar si viene marcado el candidato
-            $vStrReporte=1;
-            break;  
-            case 12://
-        
-            $vStrReporte=1;
+                $sql='SELECT
+                            f10_descripcion   f_medio_descripcion,
+                            f14_descripcion   f_tipo_medio,
+                            f15_descripcion   f_desc_candidato,
+                            f16_descripcion   f_desc_cargo,
+                            COUNT(f15_rowid) f_frec
+                        FROM
+                            t202_candidato_formulario
+                            INNER JOIN t50_formulario           t50 ON t50.f50_rowid = f202_rowid_formulario
+                            INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = t50.f50_rowid_medio_comunic
+                            INNER JOIN t14_estructura           t14 ON t14.f14_rowid = t50.f50_rowid_estructura
+                            INNER JOIN t15_candidato ON f15_rowid = f202_rowid_candidato
+                            INNER JOIN t16_cargo ON f16_rowid = f15_rowid_cargo
+                        WHERE
+                            f50_rowid_ambito = (:ambito)
+                            AND f50_rowid_estructura = (:tipo_medio)
+                            AND f50_rowid_medio_comunic = (:medio_comunic)
+                            AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND f50_tipo = (:tipo_formulario)
+                            AND f202_rowid_candidato = '.$request->selectNombreCandit.'
+                        GROUP BY
+                            f14_descripcion,
+                            f10_descripcion,
+                            f15_descripcion,
+                            f16_descripcion';
+
+                $vStrNombreView='seguimiento_electoral.rpt_se_candidatos';
             break;  
         }
 
@@ -196,7 +389,8 @@ class RptSETvNacionalController extends Controller
         'medio_comunic'=>$request->selectMedioComunic ,
         'tipo_medio'=>$request->selectEstructura,
         'desde'=>$request->inputFechaDesde,
-        'hasta'=>$request->inputFechaHasta ]
+        'hasta'=>$request->inputFechaHasta,
+        'tipo_formulario'=>2 ]
         );
 
          //observacion 
