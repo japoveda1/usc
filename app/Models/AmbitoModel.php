@@ -4,17 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TitularesUbicacionModel extends Model
+class AmbitoModel extends Model
 {
-    /**
+           /**
      * Definicion de los campos seleccionables
      */
     protected $fillable = [
-        'f28_rowid',
-        'f28_titular',
-        'f28_rowid_formulario',
-        'f28_rowid_tipo_recurso',
-        'f28_rowid_principal'
+        'f11_rowid',
+        'f11_descripcion'
         //'created_at',
         //'updated_at'
     ];
@@ -22,12 +19,12 @@ class TitularesUbicacionModel extends Model
     /**
      * Definicion del nombre de la tabla
      */
-    protected $table = "t28_titulares_ubicacion";
+    protected $table = "t11_ambito";
 
     /**
      * Definicion de la llave primaria
      */
-    protected $primaryKey = 'f28_rowid';
+    protected $primaryKey = 'f11_rowid';
 
     public $timestamps = false;
 }

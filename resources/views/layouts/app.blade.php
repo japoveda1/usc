@@ -298,13 +298,13 @@
 
 
                         <li class="nav-item ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
+                            <a href="/rpt-se-tv-nacional/1" class="nav-link nav-toggle">
                                 <i class="glyphicon glyphicon-list-alt"></i>
                                 <span class="title">Reportes</span>
                                 <span class="selected"></span>
                                 <span class="arrow open"></span>
                             </a>
-                            <ul class="sub-menu">
+                            <!--<ul class="sub-menu">
                             <li class="nav-item  ">
                                     <a href="javascript:;" class="nav-link nav-toggle">
                                         <i class="icon-notebook"></i>
@@ -312,12 +312,15 @@
                                         <span class="arrow"></span>
                                     </a>
                                     <ul class="sub-menu">
-                                        <li class="nav-item ">
-                                            <a href="/rpt-se-tv-nacional/1" class="nav-link " > Nacional </a>
+                                        <li class="nav-item start ">
+                                            <a href="/rpt-se-tv-nacional/1" class="nav-link ">
+                                            <span class="title">Nacional</span>
+                                            </a>
                                         </li>
-                                        <li class="nav-item ">
-                                            <a href="/reporte-prensa-reg/3" class="nav-link " > Regional </a>
-                                        </li>
+                                        <li class="nav-item start ">
+                                            <a href="/rpt-se-tv-regional/2" class="nav-link ">
+                                                <span class="title">Regional</span>
+                                            </a>
                                         </li>
                                     </ul>
                                 </li>
@@ -328,18 +331,21 @@
                                         <span class="arrow"></span>
                                     </a>
                                     <ul class="sub-menu">
-                                        <li class="nav-item ">
-                                            <a href="/reporte-tv-nac/2" class="nav-link " > Nacional </a>
+                                        <li class="nav-item start ">
+                                            <a href="/rpt-se-md-nacional/3" class="nav-link ">
+                                            <span class="title">Nacional</span>
+                                            </a>
                                         </li>
-                                        <li class="nav-item ">
-                                            <a href="/reporte-tv-reg/3" class="nav-link " > Regional </a>
+                                        <li class="nav-item start ">
+                                            <a href="/rpt-se-md-regional/4" class="nav-link ">
+                                                <span class="title">Regional</span>
+                                            </a>
                                         </li>
-
                                     </ul>
                                 </li>
 
 
-                            </ul>
+                            </ul>-->
                         
                         
                         

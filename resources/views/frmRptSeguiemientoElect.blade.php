@@ -34,18 +34,16 @@
           <div class="form-group">
             <label  for="selectReporte" >Reporte: </label>
             <select class="form-control" name='selectReporte' id="selectReporte">
-                  <option value=2>Tema Relevante</option>
-                  <option value=3>Origen de noticia</option>
-                  <option value=4>Candidatos</option>
-                  <option value=5>Tipo de recurso</option>
-                  <option value=6>Etiquetas</option>
-                  <option value=7>Intencion</option>
-                  <option value=8>Fuentes</option>
-                  <option value=9>Genero Periodistico</option>
-                  <option value=10>Tipo de genero </option>
-                  <option value=11>Genero Periodistico</option>
-                  <option value=12>Ubicacion</option>
-                  <option value=13>Relevancion</option>
+                  <option value=1>Tema Relevante</option>
+                  <option value=2>Origen de noticia</option>
+                  <option value=3>Tipo de recurso</option>
+                  <option value=4>Etiquetas</option>
+                  <option value=5>Intencion</option>
+                  <option value=6>Fuentes</option>
+                  <option value=7>Genero Periodistico</option>
+                  <option value=8>Tipo de Genero Periodistico</option>
+                  <option value=9>Ubicacion</option>
+                  <option value=10>Relevancion</option>
             </select>
           </div>
         </div>
@@ -53,11 +51,21 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-          <label  for="selectReporte" >Nombre del Candidato: </label>
-            <select class="form-control" name='selectNombreCandit' id="selectNombreCandit">
-                  <option value='0'>Todos...</option>
-                  <option value='1'>Frecuencia de Tema</option>
-            
+          <label for="selectEstructura" >Ambito:</label>
+            <select class="form-control" name='selectAmbito'>
+              @foreach ($ArrayAmbito as $objAmbito)
+                  <option value='{{$objAmbito->f11_rowid}}'>{{ $objAmbito->f11_descripcion}}</option>
+              @endforeach
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+          <label for="selectEstructura" >Tipo de medio :</label>
+            <select class="form-control" name='selectEstructura'>
+              @foreach ($ArrayEstructura as $objEstructura)
+                  <option value='{{$objEstructura->f14_rowid}}'>{{ $objEstructura->f14_descripcion}}</option>
+              @endforeach
             </select>
           </div>
         </div>
@@ -66,7 +74,7 @@
         <div class="col-md-6">
           <div class="form-group {{ $errors->has('selectMedioComunic') ? ' has-error' : '' }}">
             <label for="selectMedioComunic" >Medio Analizado:</label>
-            <select class="form-control" name='selectMedioComunic'>
+            <select class="form-control" name='selectMedioComunic' id="selectMedioComunic">
               <option value=''>Seleccionar ...</option>
               @foreach ($ArrayMedioComunicacion as $objMC)
                   <option value='{{$objMC->f10_rowid}}'>{{ $objMC->f10_descripcion}}</option>
@@ -81,13 +89,14 @@
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label for="selectEstructura" >Tipo de medio :</label>
-            <select class="form-control" name='selectEstructura'>
-                  <option value=''>Seleccionar ...</option>
-              @foreach ($ArrayEstructura as $objEstructura)
-                  <option value='{{$objEstructura->f14_rowid}}'>{{ $objEstructura->f14_descripcion}}</option>
-              @endforeach
+          <label  for="selectReporte" >Nombre del Candidato: </label>
+            <select class="form-control" name='selectNombreCandit' id="selectNombreCandit">
+                  <option value='0'>Todos...</option>
+                  @foreach ($ArrayCandidatos as $objCandidatos)
+                    <option value='{{$objCandidatos->f15_rowid}}'>{{ $objCandidatos->f15_descripcion}}</option>
+                  @endforeach            
             </select>
+
           </div> 
         </div>
       </div>
@@ -132,89 +141,7 @@
 
 </div>
 
-@if ($presentacionRpt==1)
-<!--TABLA FRECUENCIA DE TEMA -->
-<!--<table class="table table-bordered table-striped table-condensed flip-content">
-      <thead class="flip-content">
-          <tr>
-              <th width="20%">Tipo de medio</th>
-              <th>Medio de comunicacion</th>
-              <th>Tema</th>
-              <th>Frecuencia</th>
 
-          </tr>
-      </thead>
-      <tbody>
-        @foreach($resultado as $res)
-        
-          <tr>
-              <td> {{$res->f_tipo_medio}} </td>
-              <td> {{$res->f_medio_descripcion}} </td>
-              <td> {{$res->f_tema_descripcion}} </td>
-              <td> {{$res->f_frecuencia}} </td>
-          </tr>
-
-        @endforeach
-      </tbody>
-  </table>
-
-  <table class="table table-bordered table-striped table-condensed flip-content">
-      <thead class="flip-content">
-          <tr>
-              <th width="20%">Tipo de medio</th>
-              <th>Medio de comunicacion</th>
-              <th>Cargo</th>
-              <th>Nombre Candidato</th>
-              <th>Fecha</th>
-
-          </tr>
-      </thead>
-      <tbody> 
-          <tr>
-              <td> Television </td>
-              <td> RCN Noticias </td>
-              <td> Alcalde </td>
-              <td> Alejandro Eder</td>
-              <td> 24/Junio/2019 </td>
-          </tr>
-          <tr>
-              <td> Television </td>
-              <td> RCN Noticias </td>
-              <td> Gobernador </td>
-              <td> Oscar Gamboa</td>
-              <td> 25/Junio/2019 </td>
-
-          </tr>         
-           <tr>
-              <td> Television </td>
-              <td> RCN Noticias </td>
-              <td> Alcalde </td>
-              <td> Alejandro Eder</td>
-              <td> 26/Junio/2019 </td>
-
-          </tr>
-          <tr>
-              <td> Television </td>
-              <td> RCN Noticias </td>
-              <td> Alcalde </td>
-              <td> Alejandro Eder</td>
-              <td> 27/Junio/2019 </td>
-
-          </tr>
-          <tr>
-              <td> Television </td>
-              <td> RCN Noticias </td>
-              <td> Gobernador </td>
-              <td> Oscar Gamboa</td>
-              <td> 28/Junio/2019 </td>
-
-          </tr>
-
-
-      </tbody>
-  </table>-->
-
-@endif
 
 @if($presentacionRpt==2)
 <!--GRAFICO DE TEMA -->
@@ -489,22 +416,6 @@ function grafico_torta(){
   });
 
 
-console.log('resultado_json: ',series);
-
-  /*ArrayTemas.forEach(function(tem){
-    var series_obj = [];
-    series_obj = {
-                name:tema,
-                y:0
-              }
-
-    series.push(series_obj);
-  });*/
-
-
- 
-
-
     // Build the chart
   Highcharts.chart('torta', {
         chart: {
@@ -543,6 +454,7 @@ console.log('resultado_json: ',series);
     }]
     });
   }
+
 
 		</script>
 

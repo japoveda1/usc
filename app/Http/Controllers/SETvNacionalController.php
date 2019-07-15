@@ -28,9 +28,13 @@ use App\Models\CandidatoFormularioModel;
 
 class SETvNacionalController extends Controller
 {
+   
+
     public function __construct()
     {
        $this->middleware('auth');
+
+       
     }
     
     /**
@@ -44,25 +48,34 @@ class SETvNacionalController extends Controller
 
         $vIntAmbito=0;
         $vIntEstructura=0;
+        $vStrTitulo ='';
 
         if($id==1){//tv nacional
             $vIntAmbito=2;
             $vIntEstructura=2;
+            $vStrTitulo='Seguimiento Electoral Television Nacional';
+            
 
         }else if($id==2){//tvregional
 
             $vIntAmbito=1;
             $vIntEstructura=2;
+            $vStrTitulo='Seguimiento Electoral Television Regional';
+           
             
         }else if($id==3){//MD nacional
 
             $vIntAmbito=2;
             $vIntEstructura=5;
+            $vStrTitulo='Seguimiento Electoral Medios Digital Nacional';
+            
 
         }else if($id==4){//MD regional
 
             $vIntAmbito=1;
             $vIntEstructura=5;
+            $vStrTitulo='Seguimiento Electoral Medio Digital Regional';
+           
         }
 
 
@@ -102,7 +115,7 @@ class SETvNacionalController extends Controller
         $vArrayPosturaPublica = PosturaPublicaModel::all();
 
         return view('frmseguimientoElectoral',[
-            'strTituloFormulario'=> 'Seguimiento electoral medios nacionales TV',
+            'strTituloFormulario'=>$vStrTitulo,
             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
             'ArrayTema'=>$vArrayTema,
             'ArrayEstructura'=> $vArrayEstructura,
@@ -124,7 +137,6 @@ class SETvNacionalController extends Controller
     }
 
     public function getSubGenPerio(Request $request){
-        //dd($request);
 
         if($request->ajax()){
             
@@ -143,7 +155,6 @@ class SETvNacionalController extends Controller
 
     public function store(Request $request){
         
-
         $this->validate($request,
         [
             'inputCorreo'=>'required',
@@ -160,6 +171,8 @@ class SETvNacionalController extends Controller
             'selectComentarios'=>'required',
             'selectShere'=>'required',
             'selectNivelInt'=>'required',
+            'selectIntencion' =>'required',
+            'selectPostura'=>'required',
             'txtAreaObserv'=>'required'      
         ],
         [
@@ -174,7 +187,9 @@ class SETvNacionalController extends Controller
             'selectComentarios.required'=>'Los campos deben estar diligenciados.',
             'selectShere.required'=>'Los campos deben estar diligenciados.',
             'selectNivelInt.required'=>'Los campos deben estar diligenciados.',
-            'txtAreaObserv.requiered'=>'Las observaciones son obligatorias.'               
+            'txtAreaObserv.required'=>'Las observaciones son obligatorias.', 
+            'selectIntencion'=>'La intencion es obligatoria.',
+            'selectPostura'=>'La postura publica es obligatoria'               
         ]);
 
 
@@ -237,15 +252,25 @@ class SETvNacionalController extends Controller
                     'f50_gusta'=>$request->selectLike,
                     'f50_comentarios'=>$request->selectComentarios,
                     'f50_compartido'=>$request->selectShere,
-                    'f50_nivel_interactividad'=>$request->inputMediaInteract,
+                    'f50_nivel_interactividad'=>$request->selectNivelInt,
                     'f50_rowid_postura'=>$request->selectPostura,
-                    'f50_tipo'=>2
+                    'f50_tipo'=>2,
+                    'f50_rowid_recurso'=>selecTipoRecurso
 
                 ]
             )->get(['f50_rowid'])->last();
                     
 
+            if( $request->txtAreaTitular != null){
 
+                TitularesUbicacionModel::create([
+                    'f28_titular'=>$request->txtAreaTitular ,
+                    'f28_rowid_formulario'=>$vIntRowidFormulario->f50_rowid,
+                    'f28_rowid_tipo_recurso'=>$request->selecTipoRecurso,
+                    'f28_rowid_principal'=>1
+                ]);
+
+            }
             if( $request->inputTitularInterno1 != null){
 
                 TitularesUbicacionModel::create([
@@ -343,22 +368,28 @@ class SETvNacionalController extends Controller
             }
             
             $ArrayGobernante = $request->inputCandGobernante;
-            foreach($ArrayGobernante as $objGobernante ){
+            if (is_array($ArrayGobernante)){
+                foreach($ArrayGobernante as $objGobernante ){
 
-                CandidatoFormularioModel::create([
-                    'f202_rowid_candidato' =>   $objGobernante  ,
-                    'f202_rowid_formulario' =>$vIntRowidFormulario->f50_rowid
-                ]);
+                    CandidatoFormularioModel::create([
+                        'f202_rowid_candidato' =>   $objGobernante  ,
+                        'f202_rowid_formulario' =>$vIntRowidFormulario->f50_rowid
+                    ]);
+                }
             }
+
 
             $ArrayAlcalde = $request->inputCandAlcalde;
-            foreach($ArrayAlcalde as $objAlcalde ){
+            if(is_array( $ArrayAlcalde)){
+                foreach($ArrayAlcalde as $objAlcalde ){
 
-                CandidatoFormularioModel::create([
-                    'f202_rowid_candidato' =>   $objAlcalde  ,
-                    'f202_rowid_formulario' =>$vIntRowidFormulario->f50_rowid
-                ]);
+                    CandidatoFormularioModel::create([
+                        'f202_rowid_candidato' =>   $objAlcalde  ,
+                        'f202_rowid_formulario' =>$vIntRowidFormulario->f50_rowid
+                    ]);
+                }
             }
+
     
 
             
@@ -366,7 +397,7 @@ class SETvNacionalController extends Controller
 
             // return response()
             // ->json(['status' => true]);
-            return view('frmConfirmacion',['strMensaje'=>'Creacion exitosa','return'=>'prensa-internacional']);
+            return view('frmConfirmacion',['strMensaje'=>'Creacion exitosa','return'=>'se-tv-nacional/1']);
                 
         } catch (\Throwable $th) {
             DB::rollBack();

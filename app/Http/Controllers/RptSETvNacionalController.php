@@ -5,24 +5,62 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\MedioComunicacion;
 use App\Estructura;
+use App\Models\AmbitoModel;
+use App\Models\CandidatoModel;
 
 class RptSETvNacionalController extends Controller
 {
     public function index($id)
     {
-        //se obtienen los medios de comunicacion 
-        $vArrayMedioComunicacion= MedioComunicacion::where('f10_rowid_ambito', 3)
-                                                    ->where('f10_rowid_estructura',4)->get();
 
-        //Se obtienen los tipos de medios 
+        $vIntAmbito=0;
+        $vIntEstructura=0;
+        $vStrTitulo ='';
+
+        if($id==1){//tv nacional
+            $vIntAmbito=2;
+            $vIntEstructura=2;
+            $vStrTitulo='Reporte Seguimiento Electoral Television Nacional';
+
+        }else if($id==2){//tvregional
+
+            $vIntAmbito=1;
+            $vIntEstructura=2;
+            $vStrTitulo='Reporte Seguimiento Electoral Television Regional';
+            
+        }else if($id==3){//MD nacional
+
+            $vIntAmbito=2;
+            $vIntEstructura=5;
+            $vStrTitulo='Reporte Seguimiento Electoral Medios Digital Nacional';
+
+        }else if($id==4){//MD regional
+
+            $vIntAmbito=1;
+            $vIntEstructura=5;
+            $vStrTitulo='Reporte Seguimiento Electoral Medio Digital Regional';
+        }
+
+
+        //se obtienen los medios de comunicacion 
+        //$vArrayMedioComunicacion= MedioComunicacion::where('f10_rowid_ambito', $vIntAmbito)->where('f10_rowid_estructura', $vIntEstructura)->get();
+        $vArrayMedioComunicacion= MedioComunicacion::all();
+        
+        // tipos de medios 
         $vArrayEstructura = Estructura::all();
+
+        $vArrayCandidatos = CandidatoModel::all();
+
+        $vArrayAmbito = AmbitoModel::all();
         
         return view('frmRptSeguiemientoElect',[
             'post'=>'/consultarSETvInter',
-            'strTituloFormulario'=> 'Reporte Seguimiento Electoral TV Nacional',
+            'strTituloFormulario'=> 'Reporte Seguimiento Electoral',
             'seccion'=> '0',
             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
             'ArrayEstructura'=> $vArrayEstructura,
+            'ArrayAmbito'=>$vArrayAmbito,
+            'ArrayCandidatos'=>$vArrayCandidatos,
             'resultado'=>[],
             'presentacionRpt'=>'99']
         );
@@ -34,49 +72,14 @@ class RptSETvNacionalController extends Controller
         
         $sql='';
         $resultado=[];
-        $vStrReporte=99;    
-
-         //identificar la presentacion del reporte tabla o grafico
-        // se retorna el   $request->selectPresentacionRpt
+        $vStrReporte=99;  
+        $vStrNombreView='';   
         
-        if($request->selectMedioComunic == 2){
-
-        };
-         //identificar que reporte frecuencia relevante 
+         
+        //Identicar que reporte se desea obtener
          switch ($request->selectReporte) {
-            case 1: 
-                    //FRECUENCIA DE TEMA X MEDIO DE COMUNICACION  Y TIPO DE MEDIO
-                $sql= 'SELECT 
-                        t14.f14_descripcion as f_tipo_medio, 
-                        t10.f10_descripcion as f_medio_descripcion,
-                        t12.f12_descripcion as f_tema_descripcion,
-                        sum(t200.f200_valor) as f_frecuencia
-                        from t200_tema_formulario t200
-                        inner join t12_tema t12 on f12_rowid = t200.f200_rowid_tema
-                        inner join t50_formulario t50 on f50_rowid = t200.f200_rowid_formulario
-                        inner join t10_medio_comunicacion t10 on t10.f10_rowid= t50.f50_rowid_medio_comunic
-                        inner join t14_estructura t14 on t14.f14_rowid = t50.f50_rowid_estructura 
-                        where (t10.f10_rowid = (:medio_comunic) or (:medio_comunic)  is null )
-                        and (f50_rowid_estructura = (:tipo_medio) or (:tipo_medio)  is null )
-                        and (f50_fecha >= (:desde)  or (:desde)  is null )
-                        and (f50_fecha <= (:hasta) or (:hasta)  is null )
-                        and f50_rowid_ambito =3
-                        and f10_rowid_estructura = 4
-                        GROUP by 
-                        t14.f14_descripcion,
-                        t10.f10_descripcion,
-                        t12.f12_descripcion
-                        order by t10.f10_descripcion';
-                    
-                    $vStrReporte=1;
-                /*$res_frec_tema=DB::select($sql_frecuen_tema ,
-                        ['medio_comunic'=>$request->selectMedioComunic ,
-                        'tipo_medio'=>$request->selectEstructura,
-                        'desde'=>$request->inputFechaDesde,
-                        'hasta'=>$request->inputFechaHasta ]
-                );*/
-                break;
-            case 2:
+            case 1:// Tema relevante
+                                
             $this->validate($request,
             [
                 'selectMedioComunic'=>'required',
@@ -101,8 +104,8 @@ class RptSETvNacionalController extends Controller
                         and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
                         and (f50_fecha >= (:desde)  or (:desde)  is null )
                         and (f50_fecha <= (:hasta) or (:hasta)  is null )
-                        and f50_rowid_ambito =3
-                        and f10_rowid_estructura = 4
+                        and f50_rowid_ambito =(:ambito)
+                        and f50_tipo=2
                         group by 
                         f14_descripcion,
                         f10_descripcion,
@@ -111,12 +114,60 @@ class RptSETvNacionalController extends Controller
                         ORDER BY f10_descripcion';
 
                         $vStrReporte=2;
+                        $vStrNombreView='seguimiento_electoral.rpt_se_tema_relevante';
                     
-                break;
 
-                
+                break;
+            case 2://origen de la noticia 
+            
+            $vStrReporte=1;
+            break;    
+
+            case 3://tipo de recusro
+        
+            $vStrReporte=1;
+            break;  
+        
+            case 4://etiquetas
+        
+            $vStrReporte=1;
+            break;  
+            case 5://intencion
+        
+            $vStrReporte=1;
+            break;  
+            case 6://fuentes
+        
+            $vStrReporte=1;
+            break;  
+            case 7://Genero Periodistico
+        
+            $vStrReporte=1;
+            break;  
+            case 8://tipo Genero Periodistico
+        
+            $vStrReporte=1;
+            break;  
+            case 9://ubicacion
+        
+            $vStrReporte=1;
+            break;  
+            case 10://relevante
+        
+            $vStrReporte=1;
+            break;  
+            case 11://canditos
+                //validar si viene marcado el candidato
+            $vStrReporte=1;
+            break;  
+            case 12://
+        
+            $vStrReporte=1;
+            break;  
         }
 
+
+        //Reporte de observaciones
         if(strcmp($request->checkObservacion,'on') == 0){
             $sql= 'SELECT
                     t10.f10_descripcion f_medio_descripcion,
@@ -132,8 +183,7 @@ class RptSETvNacionalController extends Controller
                     and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
                     and (f50_fecha >= (:desde)  or (:desde)  is null )
                     and (f50_fecha <= (:hasta) or (:hasta)  is null )
-                    and f50_rowid_ambito =3
-                    and f10_rowid_estructura = 4
+                    and f50_rowid_ambito =(:ambito)
                     ORDER BY f10_descripcion,f50_fecha';
 
             $vStrReporte=3;
@@ -141,9 +191,9 @@ class RptSETvNacionalController extends Controller
         };
 
 
-
         $resultado=DB::select($sql ,
-        ['medio_comunic'=>$request->selectMedioComunic ,
+        ['ambito'=>$request->selectAmbito,
+        'medio_comunic'=>$request->selectMedioComunic ,
         'tipo_medio'=>$request->selectEstructura,
         'desde'=>$request->inputFechaDesde,
         'hasta'=>$request->inputFechaHasta ]
@@ -151,7 +201,7 @@ class RptSETvNacionalController extends Controller
 
          //observacion 
 
-        if ($request->selectReporte ==2){
+        if ($request->selectReporte ==1){
             $vIntPorcentaje=0;
             
             foreach ($resultado as &$res) {
@@ -168,49 +218,9 @@ class RptSETvNacionalController extends Controller
            
         }
 
-
-       // $sql_tema_relevante= 'SELECT'
-
-        /*$v = DB::table('t200_tema_formulario as t200')
-            ->Join('t12_tema as t12', 't12.f12_rowid', '=', 't200.f200_rowid_tema')
-            ->Join('t50_formulario as t50', 't50.f50_rowid', '=', 't200.f200_rowid_formulario')
-            ->Join('t10_medio_comunicacion as t10 ', 't10.f10_rowid', '=', 't50.f50_rowid_medio_comunic')
-            ->Join('t14_estructura as t14 ', 't14.f14_rowid', '=', 't50.f50_rowid_estructura')
-            ->select(
-                't14.f14_descripcion as f_tipo_medio',
-                't10.f10_descripcion as f_medio_descripcion',
-                't12.f12_descripcion as f_tema_descripcion',
-                DB::raw('SUM(t200.f200_valor) as f_frecuencia'))
-                
-            ->whereColumn('t10.f10_rowid', $request->selectMedioComunic ) 
-                ->orWhereColumn($request->selectMedioComunic ,$request->selectMedioComunic ) 
-            ->whereColumn('t50.f50_rowid_estructura', $request->selectEstructura ) 
-                ->orWhereColumn($request->selectEstructura ,$request->selectEstructura ) 
-            ->whereColumn('t50.f50_fecha', $request->inputFechaDesde ) 
-                ->orWhereColumn($request->inputFechaDesde ,$request->inputFechaDesde ) 
-            ->whereColumn('t50.f50_fecha', $request->inputFechaHasta ) 
-                ->orWhereColumn($request->inputFechaHasta ,$request->inputFechaHasta ) 
-            ->groupBy(
-                't14.f14_descripcion',
-                't10.f10_descripcion',
-                't12.f12_descripcion')
-            ->orderBy('t10.f10_descripcion')
-            ->get();*/
-            
-            //dd( $v );
-            /*
-            DB::table('users')
-            ->where('name', '=', 'John')
-            ->where(function ($query) {
-                $query->where('votes', '>', 100)
-                      ->orWhere('title', '=', 'Admin');
-            })
-            ->get();*/
-
-        return view('frmRptSeguiemientoElect',
-                    ['seccion'=>$vStrReporte,
-                    'resultado'=>$resultado,
-                    'presentacionRpt'=>$request->selectPresentacionRpt]);
+        return view($vStrNombreView,//Nombre de la forma ,depende del reporte
+                    ['resultado'=>$resultado,//datos a mostrar
+                     'presentacionRpt'=>$request->selectPresentacionRpt]//Si es tabla o grafico
+                    );
     }
-
 }

@@ -65,6 +65,7 @@ class RptPrensaNacController extends Controller
                     and (f50_fecha <= (:hasta) or (:hasta)  is null )
                     and f50_rowid_ambito = 2
                     and f50_rowid_estructura = 4
+                    and f50_tipo = 1
                     GROUP by 
                     t14.f14_descripcion,
                     t10.f10_descripcion,
@@ -97,6 +98,7 @@ class RptPrensaNacController extends Controller
                         and (f50_fecha <= (:hasta) or (:hasta)  is null )
                         and f50_rowid_ambito =2
                         and f50_rowid_estructura = 4
+                        and f50_tipo = 1
                         group by 
                         f14_descripcion,
                         f10_descripcion,
@@ -128,6 +130,7 @@ class RptPrensaNacController extends Controller
                     and (f50_fecha <= (:hasta) or (:hasta)  is null )
                     and f50_rowid_ambito =2
                     and f50_rowid_estructura = 4
+                    and f50_tipo = 1
                     ORDER BY f10_descripcion,f50_fecha';
 
             $vStrReporte=3;

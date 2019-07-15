@@ -102,7 +102,7 @@
         <div class="form-group">
           <label for="selecTipoRecurso" class="control-label" >Tipo de recurso:</label>
           <select class="form-control" name='selecTipoRecurso'>
-            <option value="0">No tiene ...</option>
+
           @foreach ($ArrayTipoRecurso as $objTipoRec)
                 <option value='{{$objTipoRec->f19_rowid}}' {{ (old("selecTipoRecurso") == $objTipoRec->f19_rowid ? "selected":"") }}>{{ $objTipoRec->f19_descripcion}}</option>
           @endforeach
@@ -424,6 +424,7 @@
         <div class="form-group">
           <label for="selectFuente" >Identificacion de Fuentes:</label>
           <select class="form-control" name='selectFuente'>
+          <option value="">Seleccione una opcion...</option>
           @foreach ($ArrayFuente as $objFuente)
                 <option value='{{$objFuente->f22_rowid}}' {{ (old("selectFuente") == $objFuente->f22_rowid ? "selected":"") }}>{{ $objFuente->f22_descripcion}}</option>
             @endforeach
@@ -435,8 +436,9 @@
           <div class="form-group">
             <label for="selectEquilibrio" >Equilibrio de Fuentes</label>
             <select class="form-control" name='selectEquilibrio' >
-                  <option value=0 {{ (old("selectEquilibrio") == 0 ? "selected":"") }}>No</option>
-                  <option value=1 {{ (old("selectEquilibrio") == 1 ? "selected":"") }}>Si</option>
+                  <option value=" " {{ (old("selectEquilibrio") == " " ? "selected":"") }}>Seleccione una opcion...</option>
+                  <option value="0" {{ (old("selectEquilibrio") == "0" ? "selected":"") }}>No</option>
+                  <option value="1" {{ (old("selectEquilibrio") == "1" ? "selected":"") }}>Si</option>
             </select>
           </div>
         </div>
@@ -445,11 +447,12 @@
         <div class="form-group ">
           <label for="selectrRelevancia" >Relevancia</label>
           <select class="form-control" name='selectrRelevancia' >
-                <option value=4 {{ (old("selectrRelevancia") == 4 ? "selected":"") }}>Muy Alta</option>
-                <option value=3 {{ (old("selectrRelevancia") == 3 ? "selected":"") }}>Alta</option>
-                <option value=2 {{ (old("selectrRelevancia") == 2 ? "selected":"") }}>Media</option>
-                <option value=1 {{ (old("selectrRelevancia") == 1 ? "selected":"") }}>Baja</option>
-                <option value=0 {{ (old("selectrRelevancia") == 0 ? "selected":"") }}>No tiene relevancia</option>
+                <option value=" " {{ (old("selectrRelevancia") == " " ? "selected":"") }}>Seleccione una opcion...</option>
+                <option value="4" {{ (old("selectrRelevancia") == "4" ? "selected":"") }}>Muy Alta</option>
+                <option value="3" {{ (old("selectrRelevancia") == "3" ? "selected":"") }}>Alta</option>
+                <option value="2" {{ (old("selectrRelevancia") == "2" ? "selected":"") }}>Media</option>
+                <option value="1" {{ (old("selectrRelevancia") == "1" ? "selected":"") }}>Baja</option>
+                <option value="0" {{ (old("selectrRelevancia") == "0" ? "selected":"") }}>No tiene relevancia</option>
                 
 
           </select>
@@ -459,6 +462,7 @@
         <div class="form-group">
           <label for="selectPertinencia" >Pertinencia:</label>
           <select class="form-control" name='selectPertinencia'>
+                <option value="">Seleccione una opcion...</option>
           @foreach ($ArrayPertinencia as $objPertinencia)
                 <option value='{{$objPertinencia->f23_rowid}}' {{ (old("selectPertinencia") == $objPertinencia->f23_rowid ? "selected":"") }}>{{ $objPertinencia->f23_descripcion}}</option>
             @endforeach
@@ -705,18 +709,48 @@
       }
   }        
 
-  function mediaInteractividad(){
-    var love = parseInt($("#selectLoVe").val());
-    var like =parseInt($('#selectLike').val());
-    var comentarios =parseInt($('#selectComentarios').val());
-    var shared=parseInt($('#selectShere').val());
+ function loadSubGenero(){
+    var vRowidGenPerio=$('#selectGenPerio').val();
+    console.log(vRowidGenPerio);
+    if($.trim(vRowidGenPerio) != ''){
+
+        $.ajax(
+            {
+              url : '/sub-gen-perio' ,
+              type: "GET",
+              dataType: 'json',
+              data : {pRowidGenPerio:vRowidGenPerio},
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+            })
+              .done(function(data) {
 
 
-    var media= (love+like+comentarios+shared)/4;
- 
-    $("#inputMediaInteract").val(media);
-   
-  }
+                var old = $('#selectSubGenPerio').data('old') != '' ? $('#selectSubGenPerio').data('old') : '';
+
+                $('#selectSubGenPerio').empty();
+                $('#selectSubGenPerio').append("<option value=' '>Selecciona una carrera</option>");
+
+                $.each(data, function (index, value) {
+                    $('#selectSubGenPerio').append("<option value='" + index + "'" + (old == index ? 'selected' : '') + ">" + value +"</option>");
+                }) 
+
+
+
+              })
+              .fail(function(data) {
+                console.log('FAIL => ' ,  data);
+              })
+              .always(function(data) {
+              
+              });
+
+    }else{
+      $('#selectSubGenPerio').empty();
+    }
+
+ }
 
   $(document).ready(function(){
 
@@ -727,30 +761,12 @@
       HabilitarTitularInterno();
     });
 
-    $('.interactividad').on('change',function(){
-      mediaInteractividad();
-    });
+  
     
-
+    loadSubGenero();
     $('#selectGenPerio').on('change',function(){
     
-      var vRowidGenPerio=$(this).val();
-      console.log($.trim(vRowidGenPerio) );
-      if($.trim(vRowidGenPerio) != ''){
-
-          $.get('SubGenPerio',{
-            pRowidGenPerio:vRowidGenPerio
-          },function(rSubGenPer){
-            console.log(rSubGenPer);
-             $('#selectSubGenPerio').empty();
-              
-              $.each(rSubGenPer,function(index,value){
-                $('#selectSubGenPerio').append("<option value="+index+" >" + value +"</option>");
-              })
-          });
-      }else{
-        $('#selectSubGenPerio').empty();
-      }
+      loadSubGenero();
     });
 
     // interaccion de input de titular interno
