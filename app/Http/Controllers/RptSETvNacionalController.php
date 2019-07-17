@@ -72,7 +72,7 @@ class RptSETvNacionalController extends Controller
         
         $sql='';
         $resultado=[];
-        $vStrReporte=99;  
+        $vBlnPorcentaje=false;  
         $vStrNombreView='';   
         
          
@@ -93,7 +93,7 @@ class RptSETvNacionalController extends Controller
                         f10_descripcion f_medio_descripcion,
                         f14_descripcion f_tipo_medio,
                         f12_descripcion f_tema_descripcion,
-                        count(f12_rowid) f_cantidad,
+                        count(f12_rowid) f_frec,
                         0 f_porcentaje 
                         FROM 
                         t50_formulario t50
@@ -113,7 +113,7 @@ class RptSETvNacionalController extends Controller
                         0
                         ORDER BY f10_descripcion';
 
-                        $vStrReporte=2;
+                        $vBlnPorcentaje=true;
                         $vStrNombreView='seguimiento_electoral.rpt_se_tema_relevante';
                     
 
@@ -142,7 +142,7 @@ class RptSETvNacionalController extends Controller
                             f10_descripcion,
                             f17_descripcion';
 
-            
+                $vBlnPorcentaje=true;
                 $vStrNombreView='seguimiento_electoral.rpt_se_origen_noticia';
                 
             break;    
@@ -171,7 +171,7 @@ class RptSETvNacionalController extends Controller
                             f14_descripcion,
                             f10_descripcion,
                             t19.f19_descripcion';
-        
+                $vBlnPorcentaje=true;
                 $vStrNombreView='seguimiento_electoral.rpt_se_tipo_recurso';
             break;  
         
@@ -197,6 +197,8 @@ class RptSETvNacionalController extends Controller
                             f14_descripcion,
                             f10_descripcion,
                             f20_descripcion';
+                                            $vBlnPorcentaje=true;
+
                 $vStrNombreView='seguimiento_electoral.rpt_se_etiquetas';
             break;  
             case 5://intencion
@@ -221,6 +223,8 @@ class RptSETvNacionalController extends Controller
                         f14_descripcion,
                         f10_descripcion,
                         f21_descripcion';
+                                        $vBlnPorcentaje=true;
+
                 $vStrNombreView='seguimiento_electoral.rpt_se_intencion';
             break;  
             case 6://fuentes
@@ -245,6 +249,8 @@ class RptSETvNacionalController extends Controller
                             f14_descripcion,
                             f10_descripcion,
                             f22_descripcion';
+                                            $vBlnPorcentaje=true;
+
                 $vStrNombreView='seguimiento_electoral.rpt_se_fuente';
             break;  
             case 7://Genero Periodistico
@@ -252,7 +258,7 @@ class RptSETvNacionalController extends Controller
                             f10_descripcion   f_medio_descripcion,
                             f14_descripcion   f_tipo_medio,
                             f24_descripcion   f_desc,
-                            COUNT(f24_rowid)
+                            COUNT(f24_rowid)  f_frec
                         FROM
                             t50_formulario
                             INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
@@ -269,6 +275,8 @@ class RptSETvNacionalController extends Controller
                             f14_descripcion,
                             f10_descripcion,
                             f24_descripcion';
+                                            $vBlnPorcentaje=true;
+
                 $vStrNombreView='seguimiento_electoral.rpt_se_gen_perio';
             break;  
             case 8://tipo Genero Periodistico
@@ -277,7 +285,7 @@ class RptSETvNacionalController extends Controller
                             f14_descripcion   f_tipo_medio,
                             f24_descripcion   f_desc_genero,
                             f27_descripcion   f_desc,
-                            COUNT(f27_rowid) f_frec
+                            COUNT(f27_rowid)  f_frec
                         FROM
                             t50_formulario
                             INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
@@ -296,6 +304,8 @@ class RptSETvNacionalController extends Controller
                             f10_descripcion,
                             f24_descripcion,
                             f27_descripcion';
+                                            $vBlnPorcentaje=true;
+
                 $vStrNombreView='seguimiento_electoral.rpt_se_tipo_gen_perio';
             break;  
             case 9://ubicacion
@@ -320,6 +330,8 @@ class RptSETvNacionalController extends Controller
                             f14_descripcion,
                             f10_descripcion,
                             f13_descripcion';
+                                            $vBlnPorcentaje=true;
+
                 $vStrNombreView='seguimiento_electoral.rpt_se_ubicacion';
             break;  
             case 10://relevante
@@ -348,12 +360,13 @@ class RptSETvNacionalController extends Controller
                             AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
                             AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
                             AND f50_tipo = (:tipo_formulario)
-                            AND f202_rowid_candidato = '.$request->selectNombreCandit.'
+                            AND (f202_rowid_candidato = '.$request->selectNombreCandit.' OR '.$request->selectNombreCandit.' IS NULL)
                         GROUP BY
                             f14_descripcion,
                             f10_descripcion,
                             f15_descripcion,
                             f16_descripcion';
+                            $vBlnPorcentaje=true;
 
                 $vStrNombreView='seguimiento_electoral.rpt_se_candidatos';
             break;  
@@ -395,17 +408,17 @@ class RptSETvNacionalController extends Controller
 
          //observacion 
 
-        if ($request->selectReporte ==1){
+        if ($vBlnPorcentaje){
             $vIntPorcentaje=0;
             
             foreach ($resultado as &$res) {
-                $vIntPorcentaje =$vIntPorcentaje+ $res->f_cantidad;
+                $vIntPorcentaje =$vIntPorcentaje+ $res->f_frec;
             }
 
             unset($res);
 
             foreach ($resultado as &$res) {
-                $res->f_porcentaje  =round((100 * $res->f_cantidad)/$vIntPorcentaje,1);
+                $res->f_porcentaje  =round((100 * $res->f_frec)/$vIntPorcentaje,1);
             }
 
             unset($res);

@@ -34,7 +34,7 @@
                     <td> {{$res->f_tipo_medio}} </td>
                     <td> {{$res->f_medio_descripcion}} </td>
                     <td> {{$res->f_tema_descripcion}} </td>
-                    <td> {{$res->f_cantidad}} </td>
+                    <td> {{$res->f_frec}} </td>
                     <td> {{$res->f_porcentaje}} </td>
                 </tr>
                 @endforeach
