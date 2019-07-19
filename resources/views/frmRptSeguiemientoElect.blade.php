@@ -43,7 +43,7 @@
                   <option value=7>Genero Periodistico</option>
                   <option value=8>Tipo de Genero Periodistico</option>
                   <option value=9>Ubicacion</option>
-                  <option value=10>Relevancion</option>
+                  <option value=10>Interactividad</option>
                   <option value="11">Candidato</option>
             </select>
           </div>
@@ -76,7 +76,6 @@
           <div class="form-group {{ $errors->has('selectMedioComunic') ? ' has-error' : '' }}">
             <label for="selectMedioComunic" >Medio Analizado:</label>
             <select class="form-control" name='selectMedioComunic' id="selectMedioComunic">
-              <option value=''>Seleccionar ...</option>
               @foreach ($ArrayMedioComunicacion as $objMC)
                   <option value='{{$objMC->f10_rowid}}'>{{ $objMC->f10_descripcion}}</option>
               @endforeach
@@ -92,7 +91,7 @@
           <div class="form-group">
           <label  for="selectReporte" >Nombre del Candidato: </label>
             <select class="form-control" name='selectNombreCandit' id="selectNombreCandit">
-                  <option value='0'>Todos...</option>
+                  <option value=' '>Todos...</option>
                   @foreach ($ArrayCandidatos as $objCandidatos)
                     <option value='{{$objCandidatos->f15_rowid}}'>{{ $objCandidatos->f15_descripcion}}</option>
                   @endforeach            

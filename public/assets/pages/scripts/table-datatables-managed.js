@@ -211,18 +211,18 @@ var TableDatatablesManaged = function () {
                     "sortAscending": ": activate to sort column ascending",
                     "sortDescending": ": activate to sort column descending"
                 },
-                "emptyTable": "No data available in table",
-                "info": "Showing _START_ to _END_ of _TOTAL_ records",
-                "infoEmpty": "No records found",
-                "infoFiltered": "(filtered1 from _MAX_ total records)",
-                "lengthMenu": "Show _MENU_",
-                "search": "Search:",
-                "zeroRecords": "No matching records found",
+                "emptyTable": "No hay datos en la tabla",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                "infoEmpty": "Registros no encontrados",
+                "infoFiltered": "(filtrados de _MAX_ registros totales)",
+                "lengthMenu": "Mostrados _MENU_",
+                "search": "Buscar:",
+                "zeroRecords": "No coincide ningun valor",
                 "paginate": {
-                    "previous":"Prev",
-                    "next": "Next",
-                    "last": "Last",
-                    "first": "First"
+                    "Anterior":"Ant.",
+                    "Seguiente": "Seg.",
+                    "Ultimo": "Ultimo",
+                    "Primero": "Primero"
                 }
             },
 
@@ -236,20 +236,10 @@ var TableDatatablesManaged = function () {
 
             "lengthMenu": [
                 [5, 15, 20, -1],
-                [5, 15, 20, "All"] // change per page values here
+                [5, 15, 20, "Todo"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,
-            "columnDefs": [{  // set default column settings
-                'orderable': false,
-                'targets': [0]
-            }, {
-                "searchable": false,
-                "targets": [0]
-            }],
-            "order": [
-                [1, "asc"]
-            ] // set first column as a default sort by asc
+            "pageLength": 5
         });
 
         var tableWrapper = jQuery('#sample_2_wrapper');

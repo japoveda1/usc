@@ -335,8 +335,42 @@ class RptSETvNacionalController extends Controller
                 $vStrNombreView='seguimiento_electoral.rpt_se_ubicacion';
             break;  
             case 10://relevante
-                $sql='';
-                $vStrNombreView='seguimiento_electoral.rpt_se_relevante';
+                $sql='SELECT
+                            f10_descripcion   f_medio_descripcion,
+                            f14_descripcion   f_tipo_medio,
+                            f15_descripcion   f_desc_candidato,
+                            f16_descripcion   f_desc_cargo,
+                            sum(f50_lo_ve) f_lo_ve,
+                            sum(f50_gusta) f_gusta_like,
+                            sum(f50_comentarios) f_comentario,
+                            sum(f50_compartido) f_compartido,
+                            max(f50_nivel_interactividad) f_nivel_inter
+                        FROM
+                            t50_formulario
+                            INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
+                            INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50_rowid_estructura
+                            LEFT JOIN t202_candidato_formulario ON f202_rowid_formulario = f50_rowid
+                            LEFT JOIN t15_candidato ON f15_rowid = f202_rowid_candidato
+                            LEFT JOIN t16_cargo ON f16_rowid = f15_rowid_cargo
+                        WHERE
+                            f50_rowid_ambito = (:ambito)
+                            AND f50_rowid_estructura = (:tipo_medio)
+                            AND f50_rowid_medio_comunic = (:medio_comunic)
+                            AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND f50_tipo = (:tipo_formulario)
+                        GROUP BY
+                            f14_descripcion,
+                            f10_descripcion,
+                            f15_descripcion,
+                            f16_descripcion,
+                            f50_lo_ve,
+                            f50_gusta,
+                            f50_comentarios,
+                            f50_compartido,
+                            f50_nivel_interactividad';
+                $vBlnPorcentaje=false;
+                $vStrNombreView='seguimiento_electoral.rpt_se_nivel_interactividad';
             break;  
             case 11://canditos
                 //validar si viene marcado el candidato
@@ -358,16 +392,18 @@ class RptSETvNacionalController extends Controller
                             AND f50_rowid_estructura = (:tipo_medio)
                             AND f50_rowid_medio_comunic = (:medio_comunic)
                             AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
-                            AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
+                            AND ( f50_fecha <= (:hasta)  OR (:hasta) IS NULL )
                             AND f50_tipo = (:tipo_formulario)
-                            AND (f202_rowid_candidato = '.$request->selectNombreCandit.' OR '.$request->selectNombreCandit.' IS NULL)
+                            AND (f202_rowid_candidato = (:candidato) OR (:candidato) IS NULL)
                         GROUP BY
                             f14_descripcion,
                             f10_descripcion,
                             f15_descripcion,
                             f16_descripcion';
-                            $vBlnPorcentaje=true;
 
+                $vBlnPorcentaje=true;
+
+                
                 $vStrNombreView='seguimiento_electoral.rpt_se_candidatos';
             break;  
         }
@@ -395,16 +431,30 @@ class RptSETvNacionalController extends Controller
             $vStrReporte=3;
 
         };
+        if($request->selectReporte ==11){
+            $resultado=DB::select($sql ,
+            ['ambito'=>$request->selectAmbito,
+            'medio_comunic'=>$request->selectMedioComunic ,
+            'tipo_medio'=>$request->selectEstructura,
+            'desde'=>$request->inputFechaDesde,
+            'hasta'=>$request->inputFechaHasta,
+            'tipo_formulario'=>2,
+            'candidato'=>$request->selectNombreCandit]
+            );
 
+        }else{
+            $resultado=DB::select($sql ,
+            ['ambito'=>$request->selectAmbito,
+            'medio_comunic'=>$request->selectMedioComunic ,
+            'tipo_medio'=>$request->selectEstructura,
+            'desde'=>$request->inputFechaDesde,
+            'hasta'=>$request->inputFechaHasta,
+            'tipo_formulario'=>2 ]
+            );
+        }
 
-        $resultado=DB::select($sql ,
-        ['ambito'=>$request->selectAmbito,
-        'medio_comunic'=>$request->selectMedioComunic ,
-        'tipo_medio'=>$request->selectEstructura,
-        'desde'=>$request->inputFechaDesde,
-        'hasta'=>$request->inputFechaHasta,
-        'tipo_formulario'=>2 ]
-        );
+        
+
 
          //observacion 
 

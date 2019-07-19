@@ -16,28 +16,29 @@
     <h1>TEME RELEVANTE</h1>
   </div>
   @if ($presentacionRpt==1)<!--TABLA -->
-      <table class="table table-bordered table-striped table-condensed flip-content">
-            <thead class="flip-content">
-                <tr>
-                    <th>Tipo de medio </th>
-                    <th width="20%">Medio de comunicacion</th>
-                    <th>Tema mas relevante</th>
-                    <th>Cantidad</th>
-                    <th>Porcentaje %</th>
 
+
+        <table class="table table-striped table-bordered table-hover order-column" id="sample_2">
+            <thead>
+                <tr>
+                <th>Tipo de medio </th>
+                <th>Medio de comunicacion</th>
+                <th>Tema mas relevante</th>
+                <th>Cantidad</th>
+                <th>Porcentaje %</th>
                 </tr>
             </thead>
             <tbody>
-              @foreach($resultado as $res)
-              
-                <tr>
-                    <td> {{$res->f_tipo_medio}} </td>
-                    <td> {{$res->f_medio_descripcion}} </td>
-                    <td> {{$res->f_tema_descripcion}} </td>
-                    <td> {{$res->f_frec}} </td>
-                    <td> {{$res->f_porcentaje}} </td>
-                </tr>
-                @endforeach
+            @foreach($resultado as $res)
+              <tr>
+                  <td> {{$res->f_tipo_medio}} </td>
+                  <td> {{$res->f_medio_descripcion}} </td>
+                  <td> {{$res->f_tema_descripcion}} </td>
+                  <td> {{$res->f_frec}} </td>
+                  <td> {{$res->f_porcentaje}} </td>
+              </tr>
+            @endforeach
+                
             </tbody>
         </table>
       @endif

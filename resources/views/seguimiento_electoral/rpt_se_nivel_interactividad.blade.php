@@ -13,31 +13,40 @@
           Filtros
         </a>
     <br>
-    <h1>ETIQUETAS</h1>
+    <h1>CANDIDATOS</h1>
   </div>
   @if ($presentacionRpt==1)<!--TABLA -->
-      <table class="table table-bordered table-striped table-condensed flip-content">
-            <thead class="flip-content">
-                <tr>
-                    <th>Tipo de medio </th>
-                    <th width="20%">Medio de comunicacion</th>
-                    <th>Descripcion</th>
-                    <th>Frecuencia</th>
-                    <th>Porcentaje %</th>
 
+
+        <table class="table table-striped table-bordered table-hover order-column" id="sample_2">
+            <thead>
+                <tr>
+                <th>Tipo de medio </th>
+                    <th>Medio de comunicacion</th>
+                    <th>Candidato</th>
+                    <th>Cargo</th>
+                    <th>Vistas</th>
+                    <th>Me gusta/Like</th>
+                    <th>Comentarios</th>
+                    <th>Compartido</th>
+                    <th>Nivel Interactividad</th>
                 </tr>
             </thead>
             <tbody>
-              @foreach($resultado as $res)
-              
-                <tr>
-                    <td> {{$res->f_tipo_medio}} </td>
+            @foreach($resultado as $res)
+              <tr>
+              <td> {{$res->f_tipo_medio}} </td>
                     <td> {{$res->f_medio_descripcion}} </td>
-                    <td> {{$res->f_desc}} </td>
-                    <td> {{$res->f_frec}} </td>
-                    <td> {{$res->f_porcentaje}} </td>
-                </tr>
-                @endforeach
+                    <td> {{$res->f_desc_candidato}} </td>
+                    <td> {{$res->f_desc_cargo}} </td>
+                    <td> {{$res->f_lo_ve}} </td>
+                    <td> {{$res->f_gusta_like}} </td>
+                    <td> {{$res->f_comentario}} </td>
+                    <td> {{$res->f_compartido}} </td>
+                    <td> {{$res->f_nivel_inter}} </td>
+              </tr>
+            @endforeach
+                
             </tbody>
         </table>
       @endif
@@ -63,6 +72,7 @@
 var resultado_json =  {!! json_encode($resultado) !!};
 var presentacionRpt = {!! json_encode($presentacionRpt)!!};
 var ArrayTemas =[];
+console.log(resultado_json);
 
 var ArrayCompuesto =[{medio:"",tema:[""]}];
 var ArrayMediosComunic = [];
@@ -77,9 +87,9 @@ function grafico_torta(){
  resultado_json.forEach(function(res) {
   var series_obj = [];
     series_obj = {
-                name:res.f_desc,
+                name:res.f_desc_candidato +'('+res.f_desc_cargo+')',
                 y:res.f_porcentaje,
-                drilldown:res.f_desc
+                drilldown:res.f_desc_candidato
               };
 
     series.push(series_obj);

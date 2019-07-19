@@ -44,6 +44,9 @@
         <!--Agregar elementos -->
         <link href="../assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+
+        <link href="../assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
      <style>
 
             .footer {
@@ -106,12 +109,12 @@
                                 <ul class="dropdown-menu dropdown-menu-default">
 
                                     <li>
-                                        <a href="page_user_login_1.html">
-                                            <i class="icon-key"></i>    {{ __('Logout') }}</a>
+                                        <a href="{{ route('logout') }}">
+                                            <i class="icon-key"></i>Cerrar sesion</a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <!--<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
-                                    </form>
+                                    </form>-->
                                     </li>
                                     
                                 </ul>
@@ -433,6 +436,11 @@
             <script src="../js/modules/exporting.js"></script>
             <script src="../js/modules/export-data.js"></script>
 
+                 <!-- BEGIN PAGE LEVEL PLUGINS -->
+            <script src="../assets/global/scripts/datatable.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+
                         <!-- BEGIN PAGE LEVEL PLUGINS -->
             <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
             <!-- END PAGE LEVEL PLUGINS -->
@@ -449,6 +457,8 @@
            
             <script src="../assets/global/plugins/jquery-repeater/jquery.repeater.js" type="text/javascript"></script>
             <script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+
+            <script src="../assets/pages/scripts/table-datatables-managed.js" type="text/javascript"></script>
       
             @yield('scripts')
 </body>

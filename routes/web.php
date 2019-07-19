@@ -16,11 +16,12 @@
 
 Route::group(['middleware'=>['auth'] ],function(){
 
+    Route::get('/logout','Auth\LoginController@logout')->name('logout');
     Route::get('/', function () {
         //return view('home');
         return view('home');
     });
-
+    
     Route::get('/home', 'HomeController@index')->name('home');
 
     /****************** AGENDA MEDIATICA *********************/
