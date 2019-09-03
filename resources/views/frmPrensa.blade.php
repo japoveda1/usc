@@ -54,7 +54,7 @@
       <div class="row">
         <div class="col-md-4">
           <div class="form-group">
-            <label for="selectEstructura" >Tipo de medio de Comunicacion:</label>
+            <label for="selectEstructura" >Tipo de medio de Comunicación:</label>
             <select class="form-control" name='selectEstructura'>
               @foreach ($ArrayEstructura as $objEstructura)
                   <option value='{{$objEstructura->f14_rowid}}' {{ (old("selectEstructura") == $objEstructura->f14_rowid ? "selected":"") }}>{{ $objEstructura->f14_descripcion}}</option>
@@ -73,7 +73,7 @@
         </div>
         <div class="col-md-4">
           <div class="form-group {{ $errors->has('inputFecha') ? ' has-error' : '' }}">
-            <label for="inputFecha">Dia Analizado:</label>
+            <label for="inputFecha">Día Analizado:</label>
             <input type="date" name="inputFecha"  value="{{ old('inputFecha') }}"  class="form-control" id="inputFecha" aria-describedby="fechaHelp" placeholder="Seleccione fecha">
             @if ($errors->has('inputFecha'))
                   <span class="help-block" >
@@ -91,7 +91,7 @@
           <div class="col-md-9">
             <div class="form-group {{ $errors->has('inputTitularPortada') ? ' has-error' : '' }}">
               <label  for="email">Titular:</label>
-              <input type="text" name="inputTitularPortada" class="form-control" id="inputTitularPortada" aria-describedby="emailHelp" placeholder="Ingrese el titular del medio de comunicacion">
+              <input type="text" name="inputTitularPortada" class="form-control" id="inputTitularPortada" aria-describedby="emailHelp" placeholder="Ingrese el titular del medio de comunicación">
               @if ($errors->has('inputTitularPortada'))
                     <span class="help-block" >
                         {{ $errors->first('inputTitularPortada') }}

@@ -7,46 +7,16 @@ use App\MedioComunicacion;
 use App\Estructura;
 use App\Models\AmbitoModel;
 use App\Models\CandidatoModel;
+use Illuminate\Support\Facades\Storage;
 
 class RptSETvNacionalController extends Controller
 {
     public function index($id)
     {
 
-        $vIntAmbito=0;
-        $vIntEstructura=0;
-        $vStrTitulo ='';
 
-        if($id==1){//tv nacional
-            $vIntAmbito=2;
-            $vIntEstructura=2;
-            $vStrTitulo='Reporte Seguimiento Electoral Television Nacional';
-
-        }else if($id==2){//tvregional
-
-            $vIntAmbito=1;
-            $vIntEstructura=2;
-            $vStrTitulo='Reporte Seguimiento Electoral Television Regional';
-            
-        }else if($id==3){//MD nacional
-
-            $vIntAmbito=2;
-            $vIntEstructura=5;
-            $vStrTitulo='Reporte Seguimiento Electoral Medios Digital Nacional';
-
-        }else if($id==4){//MD regional
-
-            $vIntAmbito=1;
-            $vIntEstructura=5;
-            $vStrTitulo='Reporte Seguimiento Electoral Medio Digital Regional';
-        }
-
-
-        //se obtienen los medios de comunicacion 
-        //$vArrayMedioComunicacion= MedioComunicacion::where('f10_rowid_ambito', $vIntAmbito)->where('f10_rowid_estructura', $vIntEstructura)->get();
         $vArrayMedioComunicacion= MedioComunicacion::all();
-        
-        // tipos de medios 
+
         $vArrayEstructura = Estructura::all();
 
         $vArrayCandidatos = CandidatoModel::all();
@@ -68,13 +38,24 @@ class RptSETvNacionalController extends Controller
         
     }
 
+    public function descargarRecurso($id){
+    //PDF file is stored under project/public/download/info.pdf
+
+        $file= public_path(). "/images/".$id;
+
+        $headers = [
+                    'Content-Type' => 'application/jpg',
+                ];
+
+        return response()->download($file, 'kritica.jpg', $headers);
+    }
+
     public function consultar(Request $request){
         
         $sql='';
         $resultado=[];
         $vBlnPorcentaje=false;  
         $vStrNombreView='';   
-        
          
         //Identicar que reporte se desea obtener
          switch ($request->selectReporte) {
@@ -334,7 +315,7 @@ class RptSETvNacionalController extends Controller
 
                 $vStrNombreView='seguimiento_electoral.rpt_se_ubicacion';
             break;  
-            case 10://relevante
+            case 10://interactividad
                 $sql='SELECT
                             f10_descripcion   f_medio_descripcion,
                             f14_descripcion   f_tipo_medio,
@@ -359,6 +340,7 @@ class RptSETvNacionalController extends Controller
                             AND ( f50_fecha >= (:desde)  OR (:desde) IS NULL )
                             AND ( f50_fecha <= (:hasta)  or (:hasta) IS NULL )
                             AND f50_tipo = (:tipo_formulario)
+                            AND (f202_rowid_candidato = (:candidato) OR (:candidato) IS NULL)
                         GROUP BY
                             f14_descripcion,
                             f10_descripcion,
@@ -369,7 +351,7 @@ class RptSETvNacionalController extends Controller
                             f50_comentarios,
                             f50_compartido,
                             f50_nivel_interactividad';
-                $vBlnPorcentaje=false;
+
                 $vStrNombreView='seguimiento_electoral.rpt_se_nivel_interactividad';
             break;  
             case 11://canditos
@@ -405,33 +387,102 @@ class RptSETvNacionalController extends Controller
 
                 
                 $vStrNombreView='seguimiento_electoral.rpt_se_candidatos';
-            break;  
-        }
+            break; 
+            
+            case 12: //Observacion
 
+                $sql= 'SELECT
+                            t10.f10_descripcion f_medio_descripcion,
+                            t50.f50_observacion f_observacion,
+                            f50_fecha f_fecha,
+                            f50_correo f_correo
+                        FROM 
+                            t50_formulario t50
+                            inner join t12_tema t12 on t12.f12_rowid = f50_rowid_tema_relevante
+                            inner join t10_medio_comunicacion t10 on t10.f10_rowid =f50_rowid_medio_comunic
+                            inner join t14_estructura t14 on t14.f14_rowid =  f50_rowid_estructura
+                            LEFT JOIN t202_candidato_formulario ON f202_rowid_formulario = f50_rowid
+                            LEFT JOIN t15_candidato ON f15_rowid = f202_rowid_candidato
+                            LEFT JOIN t16_cargo ON f16_rowid = f15_rowid_cargo
+                        where 
+                            (t10.f10_rowid =  (:medio_comunic) or (:medio_comunic)  is null)
+                            and f50_rowid_ambito = (:ambito)
+                            and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
+                            and (f50_fecha >= (:desde)  or (:desde)  is null )
+                            and (f50_fecha <= (:hasta) or (:hasta)  is null )
+                            and f50_rowid_ambito =(:ambito)
+                            AND f50_tipo = (:tipo_formulario)
+                            AND (f202_rowid_candidato = (:candidato) OR (:candidato) IS NULL)
+                        ORDER BY f10_descripcion,f50_fecha desc';
+                
+                $vStrNombreView='seguimiento_electoral.rpt_se_observacion';
+            break;
+            case 13://Links
+                $sql='SELECT
+                            f10_descripcion   f_medio_descripcion,
+                            f14_descripcion   f_tipo_medio,
+                            f50_titular_medio_comunic f_titulo,
+                            f18_descripcion   f_link,
+                            f50_fecha         f_fecha,
+                            f50_correo        f_correo
+                        FROM
+                            t50_formulario
+                            INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
+                            INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50_rowid_estructura
+                            INNER JOIN t18_link                 t18 ON t18.f18_rowid_formulario = f50_rowid
+                            LEFT JOIN t202_candidato_formulario ON f202_rowid_formulario = f50_rowid
+                            LEFT JOIN t15_candidato ON f15_rowid = f202_rowid_candidato
+                            LEFT JOIN t16_cargo ON f16_rowid = f15_rowid_cargo
+                        WHERE
+                            (t10.f10_rowid =  (:medio_comunic) or (:medio_comunic)  is null)
+                            and f50_rowid_ambito = (:ambito)
+                            and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
+                            and (f50_fecha >= (:desde)  or (:desde)  is null )
+                            and (f50_fecha <= (:hasta) or (:hasta)  is null )
+                            and f50_rowid_ambito =(:ambito)
+                            AND f50_tipo = (:tipo_formulario)
+                            AND (f202_rowid_candidato = (:candidato) OR (:candidato) IS NULL)
+                        order by
+                            f50_fecha DESC';
+            
+            $vStrNombreView='seguimiento_electoral.rpt_se_link';
+            break;
+            case 14 :
 
-        //Reporte de observaciones
-        if(strcmp($request->checkObservacion,'on') == 0){
-            $sql= 'SELECT
-                    t10.f10_descripcion f_medio_descripcion,
-                    t50.f50_observacion f_observacion,
-                    f50_fecha f_fecha,
-                    f50_correo f_correo
-                    FROM 
-                    t50_formulario t50
-                    inner join t12_tema t12 on t12.f12_rowid = f50_rowid_tema_relevante
-                    inner join t10_medio_comunicacion t10 on t10.f10_rowid =f50_rowid_medio_comunic
-                    inner join t14_estructura t14 on t14.f14_rowid =  f50_rowid_estructura
-                    where (t10.f10_rowid =  (:medio_comunic) or (:medio_comunic)  is null)
+            $sql='SELECT
+                        f10_descripcion   f_medio_descripcion,
+                        f14_descripcion   f_tipo_medio,
+                        f26_descripcion   f_desc,
+                        f50_titular_medio_comunic f_titulo,
+                        f50_fecha         f_fecha 
+                    FROM
+                        t50_formulario
+                        INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
+                        INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50_rowid_estructura
+                        inner join t26_archivo              t26 on t26.f26_rowid  =f50_rowid_archivo
+                        LEFT JOIN t202_candidato_formulario ON f202_rowid_formulario = f50_rowid
+                        LEFT JOIN t15_candidato ON f15_rowid = f202_rowid_candidato
+                        LEFT JOIN t16_cargo ON f16_rowid = f15_rowid_cargo
+                    WHERE
+                    (t10.f10_rowid =  (:medio_comunic) or (:medio_comunic)  is null)
+                    and f50_rowid_ambito = (:ambito)
                     and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
                     and (f50_fecha >= (:desde)  or (:desde)  is null )
                     and (f50_fecha <= (:hasta) or (:hasta)  is null )
                     and f50_rowid_ambito =(:ambito)
-                    ORDER BY f10_descripcion,f50_fecha';
+                    AND f50_tipo = (:tipo_formulario)
+                    AND (f202_rowid_candidato = (:candidato) OR (:candidato) IS NULL)';
+            
+            $vStrNombreView='seguimiento_electoral.rpt_se_recursos_adjuntos';
 
-            $vStrReporte=3;
+            break;
 
-        };
-        if($request->selectReporte ==11){
+        }
+
+
+
+        if($request->selectReporte ==11 || $request->selectReporte ==10 || $request->selectReporte ==12||$request->selectReporte ==13||
+        $request->selectReporte ==14   ){
             $resultado=DB::select($sql ,
             ['ambito'=>$request->selectAmbito,
             'medio_comunic'=>$request->selectMedioComunic ,
@@ -480,4 +531,7 @@ class RptSETvNacionalController extends Controller
                      'presentacionRpt'=>$request->selectPresentacionRpt]//Si es tabla o grafico
                     );
     }
+
+
+    
 }

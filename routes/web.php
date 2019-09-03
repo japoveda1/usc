@@ -76,7 +76,10 @@ Route::group(['middleware'=>['auth'] ],function(){
     Route::get('/sub-gen-perio','SETvNacionalController@getSubGenPerio');
     Route::get('/load-medio-comunic','RptSETvNacionalController@loadMedioComunic');
 
-    Route::post('/post-se-tv-nacional', 'SETvNacionalController@store')->name('SETvNacional.store');
+    Route::post('/post-se-tv-nacional', 'SETvNacionalController@store');
+
+    Route::get('/descargar-recurso/{id}','RptSETvNacionalController@descargarRecurso')->name('descargar-imagen');
+
 
 } );
 

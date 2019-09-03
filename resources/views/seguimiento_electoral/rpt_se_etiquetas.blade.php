@@ -123,11 +123,4 @@ function grafico_torta(){
 }
 
 		</script>
-
-
-
-
-
-
-
 @endsection

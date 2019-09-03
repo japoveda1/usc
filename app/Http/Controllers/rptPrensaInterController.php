@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\MedioComunicacion;
 use App\Estructura;
+use App\Models\AmbitoModel;
+
 
 class rptPrensaInterController extends Controller
 {
@@ -22,6 +24,9 @@ class rptPrensaInterController extends Controller
 
         //Se obtienen los tipos de medios 
         $vArrayEstructura = Estructura::all();
+
+        $vArrayAmbito = AmbitoModel::all();
+
         
         return view('frmRptPrensaInternacional',[
             'post'=>'/consultarPrensaInter',
@@ -29,6 +34,7 @@ class rptPrensaInterController extends Controller
             'seccion'=> '0',
             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
             'ArrayEstructura'=> $vArrayEstructura,
+            'ArrayAmbito'=>$vArrayAmbito,
             'resultado'=>[],
             'presentacionRpt'=>'99']
         );
@@ -66,8 +72,8 @@ class rptPrensaInterController extends Controller
                         and (f50_rowid_estructura = (:tipo_medio) or (:tipo_medio)  is null )
                         and (f50_fecha >= (:desde)  or (:desde)  is null )
                         and (f50_fecha <= (:hasta) or (:hasta)  is null )
-                        and f50_rowid_ambito =3
-                        and f10_rowid_estructura = 4
+                        and f50_rowid_ambito =(:ambito)
+                        AND f50_tipo = (:tipo_formulario)
                         GROUP by 
                         t14.f14_descripcion,
                         t10.f10_descripcion,
@@ -75,21 +81,9 @@ class rptPrensaInterController extends Controller
                         order by t10.f10_descripcion';
                     
                     $vStrReporte=1;
-                /*$res_frec_tema=DB::select($sql_frecuen_tema ,
-                        ['medio_comunic'=>$request->selectMedioComunic ,
-                        'tipo_medio'=>$request->selectEstructura,
-                        'desde'=>$request->inputFechaDesde,
-                        'hasta'=>$request->inputFechaHasta ]
-                );*/
                 break;
             case 2:
-            $this->validate($request,
-            [
-                'selectMedioComunic'=>'required',
-            ],
-            [
-                'selectMedioComunic.required'=>'Para el reporte "Tema relevante" es obligatorio el medio de comunicacion',
-            ]);
+
     
                 //TEMA RELEVANTE X MEDIO DE COMUNICACION  Y TIPO DE MEDIO
                 $sql='SELECT
@@ -105,10 +99,11 @@ class rptPrensaInterController extends Controller
                         inner join t14_estructura t14 on t14.f14_rowid =  f50_rowid_estructura
                         where (t10.f10_rowid =  (:medio_comunic) or (:medio_comunic)  is null)
                         and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
+                        and (f50_rowid_estructura = (:tipo_medio) or (:tipo_medio)  is null )
                         and (f50_fecha >= (:desde)  or (:desde)  is null )
                         and (f50_fecha <= (:hasta) or (:hasta)  is null )
-                        and f50_rowid_ambito =3
-                        and f10_rowid_estructura = 4
+                        and f50_rowid_ambito =(:ambito)
+                        AND f50_tipo = (:tipo_formulario)
                         group by 
                         f14_descripcion,
                         f10_descripcion,
@@ -119,42 +114,72 @@ class rptPrensaInterController extends Controller
                         $vStrReporte=2;
                     
                 break;
+            case 3:
 
+                $sql= 'SELECT
+                        t10.f10_descripcion f_medio_descripcion,
+                        t50.f50_observacion f_observacion,
+                        f50_fecha f_fecha,
+                        f50_correo f_correo
+                        FROM 
+                        t50_formulario t50
+                        inner join t12_tema t12 on t12.f12_rowid = f50_rowid_tema_relevante
+                        inner join t10_medio_comunicacion t10 on t10.f10_rowid =f50_rowid_medio_comunic
+                        inner join t14_estructura t14 on t14.f14_rowid =  f50_rowid_estructura
+                        where (t10.f10_rowid =  (:medio_comunic) or (:medio_comunic)  is null)
+                        and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
+                        and (f50_fecha >= (:desde)  or (:desde)  is null )
+                        and (f50_fecha <= (:hasta) or (:hasta)  is null )
+                        and f50_rowid_ambito =(:ambito)
+                        AND f50_tipo = (:tipo_formulario)
+                        ORDER BY f10_descripcion,f50_fecha';
+
+                $vStrReporte=3;
+
+                break;
+            case 4:
+            $sql='SELECT
+                        f10_descripcion   f_medio_descripcion,
+                        f14_descripcion   f_tipo_medio,
+                        f50_titular_medio_comunic f_titulo,
+                        f18_descripcion   f_link,
+                        f50_fecha         f_fecha,
+                        f50_correo        f_correo
+                    FROM
+                        t50_formulario
+                        INNER JOIN t10_medio_comunicacion   t10 ON t10.f10_rowid = f50_rowid_medio_comunic
+                        INNER JOIN t14_estructura           t14 ON t14.f14_rowid = f50_rowid_estructura
+                        INNER JOIN t18_link                 t18 ON t18.f18_rowid_formulario = f50_rowid
+                        LEFT JOIN t202_candidato_formulario ON f202_rowid_formulario = f50_rowid
+                        LEFT JOIN t15_candidato ON f15_rowid = f202_rowid_candidato
+                        LEFT JOIN t16_cargo ON f16_rowid = f15_rowid_cargo
+                    WHERE
+                        (t10.f10_rowid =  (:medio_comunic) or (:medio_comunic)  is null)
+                        and f50_rowid_ambito = (:ambito)
+                        and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
+                        and (f50_fecha >= (:desde)  or (:desde)  is null )
+                        and (f50_fecha <= (:hasta) or (:hasta)  is null )
+                        AND f50_tipo = (:tipo_formulario)
+                    order by
+                        f50_fecha DESC';
+            
+            $vStrReporte=4;
+
+
+            break;
                 
         }
-
-        if(strcmp($request->checkObservacion,'on') == 0){
-            $sql= 'SELECT
-                    t10.f10_descripcion f_medio_descripcion,
-                    t50.f50_observacion f_observacion,
-                    f50_fecha f_fecha,
-                    f50_correo f_correo
-                    FROM 
-                    t50_formulario t50
-                    inner join t12_tema t12 on t12.f12_rowid = f50_rowid_tema_relevante
-                    inner join t10_medio_comunicacion t10 on t10.f10_rowid =f50_rowid_medio_comunic
-                    inner join t14_estructura t14 on t14.f14_rowid =  f50_rowid_estructura
-                    where (t10.f10_rowid =  (:medio_comunic) or (:medio_comunic)  is null)
-                    and (f14_rowid =(:tipo_medio) or (:tipo_medio) is null)
-                    and (f50_fecha >= (:desde)  or (:desde)  is null )
-                    and (f50_fecha <= (:hasta) or (:hasta)  is null )
-                    and f50_rowid_ambito =3
-                    and f10_rowid_estructura = 4
-                    ORDER BY f10_descripcion,f50_fecha';
-
-            $vStrReporte=3;
-
-        };
-
-
 
         $resultado=DB::select($sql ,
         ['medio_comunic'=>$request->selectMedioComunic ,
         'tipo_medio'=>$request->selectEstructura,
         'desde'=>$request->inputFechaDesde,
-        'hasta'=>$request->inputFechaHasta ]
+        'hasta'=>$request->inputFechaHasta,
+        'ambito'=>$request->selectAmbito,
+        'tipo_formulario'=>1
+          ]
         );
-
+            
          //observacion 
 
         if ($request->selectReporte ==2){

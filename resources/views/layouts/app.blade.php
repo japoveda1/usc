@@ -179,18 +179,18 @@
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-screen-desktop"></i>
-                                <span class="title">Television</span>
+                                <span class="title">Televisión </span>
                             
                                 <span class="arrow "></span>
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item start ">
-                                    <a href="/television-regional" class="nav-link ">
+                                    <a href="/Televisión -regional" class="nav-link ">
                                        <span class="title">Regional</span>
                                     </a>
                                 </li>
                                 <li class="nav-item start ">
-                                    <a href="/television-nacional" class="nav-link ">
+                                    <a href="/Televisión -nacional" class="nav-link ">
                                         <span class="title">Nacional</span>
                                     </a>
                                 </li>
@@ -227,7 +227,7 @@
                                 <li class="nav-item  ">
                                     <a href="javascript:;" class="nav-link nav-toggle">
                                         <i class="icon-notebook"></i>
-                                        <span class="title">Television</span>
+                                        <span class="title">Televisión </span>
                                         <span class="arrow"></span>
                                     </a>
                                     <ul class="sub-menu">
@@ -260,7 +260,7 @@
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-screen-desktop"></i>
-                                <span class="title">Television</span>
+                                <span class="title">Televisión </span>
                             
                                 <span class="arrow "></span>
                             </a>
@@ -311,7 +311,7 @@
                             <li class="nav-item  ">
                                     <a href="javascript:;" class="nav-link nav-toggle">
                                         <i class="icon-notebook"></i>
-                                        <span class="title">Television</span>
+                                        <span class="title">Televisión </span>
                                         <span class="arrow"></span>
                                     </a>
                                     <ul class="sub-menu">

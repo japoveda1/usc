@@ -12,6 +12,7 @@ use App\Archivo;
 use App\TemaFormulario;
 use App\Link;
 use App\Models\PrensaInternacionalModel;
+use App\Models\AmbitoModel;
 
 class PrensaInternacionalController extends Controller
 {
@@ -35,6 +36,8 @@ class PrensaInternacionalController extends Controller
 
          //Se obtienen los temas
          $vArrayTema= Tema::all();
+
+         $vArrayAmbito = AmbitoModel::all();
            
          //
         $vArrayEstructura = Estructura::where('f14_rowid',$vArrayMedioComunicacion[0]->f10_rowid_estructura)->get();;
@@ -44,6 +47,7 @@ class PrensaInternacionalController extends Controller
              'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
              'ArrayTema'=>$vArrayTema,
              'ArrayEstructura'=> $vArrayEstructura,
+             'ArrayAmbito'=>$vArrayAmbito,
              'post'=>'prensa-internacional']
          );
     }
@@ -119,29 +123,6 @@ class PrensaInternacionalController extends Controller
                     'f50_titular_solo_portada'=>1,
                     'f50_titular_solo_interior'=>0,
                     'f50_tipo'=>1
-                    //'f50_titular_interior_1'=>$request->
-                    //'f50_titular_interior_2'=>$request->
-                    //'f50_titular_interior_3'=>$request->
-                    //'f50_titular_interior_4'=>$request->
-                    //'f50_titular_interior_5'=>$request->
-                    //'f50_rowid_candidato_alcaldia'=>$request->
-                    //'f50_rowid_candidato_gobern'=>$request->
-                    //'f50_rowid_origen_noticia'=>$request->
-                    //'f50_rowid_ubicacion'=>$request->
-                    //'f50_rowid_intencion'=>$request->
-                    //'f50_ind_identificacion_fuente'=>$request->
-                    //'f50_rowid_pertinencia_fuente'=>$request->
-                    //'f50_equilibrio_fuente'=>$request->
-                    //'f50_relevancia_valor'=>$request->
-                    //'f50_rowid_genero_periodistico'=>$request->
-                    //'f50_lo_ve'=>$request->
-                    //'f50_gusta'=>$request->
-                    //'f50_comentarios'=>$request->
-                    //'f50_compartido'=>$request->
-                    //'f50_nivel_interactividad'=>$request->
-                    //'f50_rowid_postura'
-
-
                 ]
             )->get(['f50_rowid'])->last();
             //Se crea objeto anonimo para guardar los temas relacionados            
@@ -152,7 +133,6 @@ class PrensaInternacionalController extends Controller
 
             //Se recorre los elementos del formulario para tomar los del tema relacionado
             foreach ($vObjTemporal as $clave => $valor) {
-             
                 if( strcmp(substr($clave,0,10),'selectTema') == 0 && $valor != 0){
                     
                     $vStrRowidTema= substr($clave,10,2);

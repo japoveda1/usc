@@ -45,6 +45,9 @@
                   <option value=9>Ubicacion</option>
                   <option value=10>Interactividad</option>
                   <option value="11">Candidato</option>
+                  <option value="12">Observaciones</option>
+                  <option value="13">Links</option>
+                  <option value="14">Recursos Adjuntos</option>
             </select>
           </div>
         </div>
@@ -114,14 +117,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-group">
-            <label for="" >Observacion: </label>
-            <input  type="checkbox" name="checkObservacion" >
-          </div>
-        </div>
-      </div>
+
       <input class="btn green" type="submit" value="Consultar">
     </form>
 
@@ -254,25 +250,6 @@
 
 <script type="text/javascript">
 
-
-
-$( "#rowCandidatos" ).hide();
-
-$('#selectReporte').on('change',function(){
-  
-  var idReporte= $( "#selectReporte" ).val();
-
-  if(idReporte == 4){
-    $( "#rowCandidatos" ).show();
-  }else{
-
-    $('#selectCargo').val('0');
-    $('#selectNombreCandit').val('0');
-    $( "#rowCandidatos" ).hide();
-    console.log($( "#selectCargo" ).val());
-  }
-
-});
     
 var resultado_json =  {!! json_encode($resultado) !!};
 var seccion = {!! json_encode($seccion)!!};
