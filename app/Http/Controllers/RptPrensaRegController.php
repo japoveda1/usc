@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\MedioComunicacion;
 use App\Estructura;
+use App\Models\AmbitoModel;
 
 class RptPrensaRegController extends Controller
 {
@@ -23,6 +24,8 @@ class RptPrensaRegController extends Controller
 
         //Se obtienen los tipos de medios 
         $vArrayEstructura = Estructura::all();
+
+        $vArrayAmbito = AmbitoModel::all();
         
         return view('frmRptPrensaInternacional',[
             'post'=>'/consultarPrensaReg',
@@ -30,6 +33,7 @@ class RptPrensaRegController extends Controller
             'seccion'=> '0',
             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
             'ArrayEstructura'=> $vArrayEstructura,
+            'ArrayAmbito'=>$vArrayAmbito,
             'resultado'=>[],
             'presentacionRpt'=>'99']
         );

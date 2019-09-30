@@ -185,12 +185,12 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item start ">
-                                    <a href="/Televisión -regional" class="nav-link ">
+                                    <a href="/television-regional" class="nav-link ">
                                        <span class="title">Regional</span>
                                     </a>
                                 </li>
                                 <li class="nav-item start ">
-                                    <a href="/Televisión -nacional" class="nav-link ">
+                                    <a href="/television-nacional" class="nav-link ">
                                         <span class="title">Nacional</span>
                                     </a>
                                 </li>

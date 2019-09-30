@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\MedioComunicacion;
 use App\Estructura;
+use App\Models\AmbitoModel;
+
 class RptPrensaNacController extends Controller
 {
     public function __construct()
@@ -22,6 +24,8 @@ class RptPrensaNacController extends Controller
 
         //Se obtienen los tipos de medios 
         $vArrayEstructura = Estructura::all();
+
+        $vArrayAmbito = AmbitoModel::all();
         
         return view('frmRptPrensaInternacional',[
             'post'=>'/consultarPrensaNac',
@@ -29,6 +33,7 @@ class RptPrensaNacController extends Controller
             'seccion'=> '0',
             'ArrayMedioComunicacion'=>$vArrayMedioComunicacion,
             'ArrayEstructura'=> $vArrayEstructura,
+            'ArrayAmbito'=>$vArrayAmbito,
             'resultado'=>[],
             'presentacionRpt'=>'99']
         );

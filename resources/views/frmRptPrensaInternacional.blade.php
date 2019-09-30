@@ -239,7 +239,7 @@
       </table>
 </div>
 
-@elseif($seccion==3)
+@elseif($seccion==4)
 
     <table class="table table-striped table-bordered table-hover order-column" id="sample_2">
             <thead>
