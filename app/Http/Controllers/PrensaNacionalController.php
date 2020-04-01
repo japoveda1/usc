@@ -99,7 +99,7 @@ class PrensaNacionalController extends Controller
                 $vIntRowidArchivo = $vTemp->f26_rowid;
             };
             
-            return vIntRowidArchivo;
+            
             $vIntRowidFormulario = Formulario::create(
                 [
                     'f50_estado'=>0,
